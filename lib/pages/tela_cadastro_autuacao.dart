@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:projeto_procon/constantes/constantes.dart';
 import '../widgets/text_field.dart';
 import '../widgets/container_personalizado.dart';
+import '../widgets/dropdownButton_Estados.dart';
 
 class TelaCadastroAuto extends StatefulWidget {
   const TelaCadastroAuto({Key? key}) : super(key: key);
@@ -51,21 +52,21 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
                 SizedBox(height: 10,),
                 Row(
                   children: [
-                    Expanded(child: MeuTextField(hintTextInput: "Rua"),),
+                    Expanded(child: MeuTextField(hintTextInput: "CEP"),),
                     SizedBox(width: 5,),
-                    Expanded(child: MeuTextField(hintTextInput: "Bairro"),)
+                    Expanded(child: MeuTextField(hintTextInput: "Logradouro"),),
                   ],
                 ),
                 SizedBox(height: 10,),
                 Row(
                   children: [
-                    Expanded(child: MeuTextField(hintTextInput: "Cidade"),),
+                    Expanded(child: MeuTextField(hintTextInput: "Bairro"),),
                     SizedBox(width: 5,),
-                    Expanded(child: MeuTextField(hintTextInput: "CEP"),)
+                    Expanded(child: DropdownButton_Estados()),
                   ],
                 ),
                 SizedBox(height: 10,),
-                MeuTextField(hintTextInput: "Estado"),
+                MeuTextField(hintTextInput: "Cidade"),
                 SizedBox(height: 10,),
                 Text("Dados do Responsável"),
                 MeuTextField(hintTextInput: "Nome"),
@@ -74,21 +75,21 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
                 SizedBox(height: 10,),
                 Row(
                   children: [
-                    Expanded(child: MeuTextField(hintTextInput: "Rua"),),
+                    Expanded(child: MeuTextField(hintTextInput: "CEP"),),
                     SizedBox(width: 5,),
-                    Expanded(child: MeuTextField(hintTextInput: "Bairro"),)
+                    Expanded(child: MeuTextField(hintTextInput: "Logradouro"),)
                   ],
                 ),
                 SizedBox(height: 10,),
                 Row(
                   children: [
-                    Expanded(child: MeuTextField(hintTextInput: "Cidade"),),
+                    Expanded(child: MeuTextField(hintTextInput: "Bairro"),),
                     SizedBox(width: 5,),
-                    Expanded(child: MeuTextField(hintTextInput: "CEP"),)
+                    Expanded(child: DropdownButton_Estados()),
                   ],
                 ),
-                SizedBox(height: 10,),
-                MeuTextField(hintTextInput: "Estado"),
+                SizedBox(height: 10,), 
+                MeuTextField(hintTextInput: "Cidade"),
                 SizedBox(height: 10,),
                 MeuTextField(hintTextInput: "Telefone"),
                 SizedBox(height: 10,),
@@ -101,16 +102,13 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
                   ],
                 ),
                 SizedBox(height: 10,),
-                Text("Comissão Legal"),
+                Text("Cominação Legal"),
                 Text("Preencha os campos abaixo:"),
                 Row(
                   children: [
                     Expanded(child: ContainerPersonalizado(
                       aoPressionar: () async {
-                        TimeOfDay? newTime = await showTimePicker(
-                            context: context,
-                            initialTime: TimeOfDay(hour: 20, minute: 38),
-                        );
+                        TimeOfDay? newTime = await obterHora(context);
 
                         if (newTime == null) return;
 
@@ -141,12 +139,15 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
                         style: kEstiloTextoContainerPersonalizado.copyWith(fontSize: 14),
                       ),
                     ),),
-
                   ],
                 ),
-
-
-
+                SizedBox(height: 10,),
+                Text("Irregularidade Constatada:"),
+                SizedBox(height: 3,),
+                TextFormField(
+                  decoration: kDecoracaoDeCampos,
+                  maxLines: 20,
+                )
               ],
             ),
           ),
@@ -165,3 +166,11 @@ Future<DateTime?> obterData(BuildContext context) async{
       lastDate: DateTime(2100)
   );
 }
+
+Future<TimeOfDay?> obterHora(BuildContext context) async {
+  return showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(hour: 20, minute: 20)
+  );
+}
+

@@ -13,3 +13,20 @@ const double kalturaEspacamento = 30;
 const double kalturaContainerPersonalizado = 50;
 const double kalturaCardDeAutuacao = 80;
 
+const List<String> klistaDeEstados = <String>['Estado','PI', 'AL', 'AP',
+'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG',
+'PA', 'PB', 'PR', 'PE', 'AC', 'RJ', 'RN', 'RS', 'RO', 'RR',
+'RO', 'RR', 'SC', 'SP', 'SE', 'TO'];
+
+const InputDecoration kDecoracaoDeCampos = InputDecoration(
+  hintStyle: TextStyle(color: Colors.black54),
+  enabledBorder: OutlineInputBorder(borderSide: BorderSide(
+      color: Colors.transparent
+  ),),
+  focusedBorder: OutlineInputBorder(borderSide: BorderSide(
+      color: Colors.transparent
+  ),),
+  fillColor: kCinzaMuitoClaro,
+  filled: true,
+  floatingLabelBehavior: FloatingLabelBehavior.never,
+);

@@ -4,7 +4,7 @@ import 'pages/tela_login.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     localizationsDelegates: [
       GlobalMaterialLocalizations.delegate
     ],
