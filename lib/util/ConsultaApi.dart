@@ -5,9 +5,6 @@ import 'package:http/http.dart' as http;
 import 'package:projeto_procon/util/shared_var.dart';
 
 class ConsultaApi {
-  // http://10.0.2.2:3000
-  // https://goescola.inforpiaui.app.br
-  // https://www.infoedubj.com.br
   static var url_webservice = 'http://apiprocon.inforpiaui.app.br/apinota';
   static var url_login = url_webservice + '/loginapi';
 
