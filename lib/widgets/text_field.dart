@@ -4,8 +4,9 @@ import '../constantes/constantes.dart';
 class MeuTextField extends StatelessWidget {
 
   final String hintTextInput;
+  final TextStyle style;
 
-  const MeuTextField({Key? key, required this.hintTextInput}) : super(key: key);
+  const MeuTextField({Key? key, required this.hintTextInput, required this.style}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +24,7 @@ class MeuTextField extends StatelessWidget {
           filled: true,
           floatingLabelBehavior: FloatingLabelBehavior.never,
       ),
-      style: const TextStyle(
-        color: Colors.black54,
-      ),
+      style: style
     );
   }
 }

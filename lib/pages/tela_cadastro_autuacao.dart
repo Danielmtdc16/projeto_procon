@@ -14,8 +14,13 @@ class TelaCadastroAuto extends StatefulWidget {
 
 class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
 
-  String date = "Data da Infração";
-  String time = "Horário da Infração";
+  String dataLocalAutuacao = "Data da Infração";
+  String timeLocalAutuacao = "Horário da Infração";
+
+  String dataCominacaoLegal = "Data da Infração";
+  String timeCominacaoLegal = "Horário da Infração";
+
+  String data3via = "Selecione a Data";
 
   @override
   Widget build(BuildContext context) {
@@ -31,79 +36,77 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                MeuTextField(hintTextInput: "Razão Social"),
+                MeuTextField(hintTextInput: "Razão Social", style: kTextosDosInputsTelaCadastro,),
                 SizedBox(height: 10,),
-                MeuTextField(hintTextInput: "Nome de Fantasia"),
+                MeuTextField(hintTextInput: "Nome de Fantasia", style: kTextosDosInputsTelaCadastro,),
                 SizedBox(height: 10,),
-                MeuTextField(hintTextInput: "Atividade"),
+                MeuTextField(hintTextInput: "Atividade", style: kTextosDosInputsTelaCadastro,),
                 SizedBox(height: 10,),
-                MeuTextField(hintTextInput: "CNPJ/CPF"),
+                MeuTextField(hintTextInput: "CNPJ/CPF", style: kTextosDosInputsTelaCadastro,),
                 SizedBox(height: 10,),
                 Row(
                   children: [
                     Checkbox(value: true, onChanged: (value){}),
-                    Text("I.M."),
+                    Text("I.M.", style: kTextosDosInputsTelaCadastro,),
                     Checkbox(value: true, onChanged: (value){}),
-                    Text("I.E.")
+                    Text("I.E.", style: kTextosDosInputsTelaCadastro,)
                   ],
                 ),
                 SizedBox(height: 10,),
-                MeuTextField(hintTextInput: "FAX"),
+                MeuTextField(hintTextInput: "FAX", style: kTextosDosInputsTelaCadastro,),
                 SizedBox(height: 10,),
                 Row(
                   children: [
-                    Expanded(child: MeuTextField(hintTextInput: "CEP"),),
+                    Expanded(child: MeuTextField(hintTextInput: "CEP", style: kTextosDosInputsTelaCadastro,),),
                     SizedBox(width: 5,),
-                    Expanded(child: MeuTextField(hintTextInput: "Logradouro"),),
+                    Expanded(child: MeuTextField(hintTextInput: "Logradouro", style: kTextosDosInputsTelaCadastro,),),
                   ],
                 ),
                 SizedBox(height: 10,),
                 Row(
                   children: [
-                    Expanded(child: MeuTextField(hintTextInput: "Bairro"),),
+                    Expanded(child: MeuTextField(hintTextInput: "Bairro", style: kTextosDosInputsTelaCadastro,),),
                     SizedBox(width: 5,),
                     Expanded(child: DropdownButton_Estados()),
                   ],
                 ),
                 SizedBox(height: 10,),
-                MeuTextField(hintTextInput: "Cidade"),
+                MeuTextField(hintTextInput: "Cidade", style: kTextosDosInputsTelaCadastro,),
+                SizedBox(height: 20,),
+                Divider(color: kCinzaClaro, height: 30, thickness: 2,),
+                SizedBox(height: 5,),
+                Text("Dados do Responsável", style: kTextosPrincipaisTelaCadastro,),
                 SizedBox(height: 10,),
-                Text("Dados do Responsável"),
-                MeuTextField(hintTextInput: "Nome"),
+                MeuTextField(hintTextInput: "Nome", style: kTextosDosInputsTelaCadastro,),
                 SizedBox(height: 10,),
-                MeuTextField(hintTextInput: "CPF/RG"),
+                MeuTextField(hintTextInput: "CPF/RG", style: kTextosDosInputsTelaCadastro,),
                 SizedBox(height: 10,),
                 Row(
                   children: [
-                    Expanded(child: MeuTextField(hintTextInput: "CEP"),),
+                    Expanded(child: MeuTextField(hintTextInput: "CEP", style: kTextosDosInputsTelaCadastro,),),
                     SizedBox(width: 5,),
-                    Expanded(child: MeuTextField(hintTextInput: "Logradouro"),)
+                    Expanded(child: MeuTextField(hintTextInput: "Logradouro", style: kTextosDosInputsTelaCadastro,),)
                   ],
                 ),
                 SizedBox(height: 10,),
                 Row(
                   children: [
-                    Expanded(child: MeuTextField(hintTextInput: "Bairro"),),
+                    Expanded(child: MeuTextField(hintTextInput: "Bairro", style: kTextosDosInputsTelaCadastro,),),
                     SizedBox(width: 5,),
                     Expanded(child: DropdownButton_Estados()),
                   ],
                 ),
                 SizedBox(height: 10,), 
-                MeuTextField(hintTextInput: "Cidade"),
+                MeuTextField(hintTextInput: "Cidade", style: kTextosDosInputsTelaCadastro,),
                 SizedBox(height: 10,),
-                MeuTextField(hintTextInput: "Telefone"),
+                MeuTextField(hintTextInput: "Telefone", style: kTextosDosInputsTelaCadastro,),
+                SizedBox(height: 20,),
+                Divider(color: kCinzaClaro, height: 30, thickness: 2,),
+                SizedBox(height: 5,),
+                Text("Local de Autuação", style: kTextosPrincipaisTelaCadastro),
                 SizedBox(height: 10,),
-                Text("Local de Autuação"),
-                Row(
-                  children: [
-                    Expanded(child: MeuTextField(hintTextInput: "Data"),),
-                    SizedBox(width: 5,),
-                    Expanded(child: MeuTextField(hintTextInput: "Hora"),)
-                  ],
-                ),
+                MeuTextField(hintTextInput: 'Local de Autuação', style: kTextosDosInputsTelaCadastro),
                 SizedBox(height: 10,),
-                Text("Cominação Legal"),
-                Text("Preencha os campos abaixo:"),
                 Row(
                   children: [
                     Expanded(child: ContainerPersonalizado(
@@ -113,12 +116,12 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
                         if (newTime == null) return;
 
                         setState(() {
-                          time = newTime.toString();
+                          timeLocalAutuacao = newTime.toString();
                         });
                       },
                       cor: kAzulClaro,
                       filhoContainer: Text(
-                        time,
+                        timeLocalAutuacao,
                         style: kEstiloTextoContainerPersonalizado.copyWith(fontSize: 14),
                       ),
                     ),),
@@ -130,24 +133,106 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
                         if (newDate == null) return;
 
                         setState(() {
-                          date = DateFormat('dd/MM/yyyy').format(newDate);
+                          dataLocalAutuacao = DateFormat('dd/MM/yyyy').format(newDate);
                         });
                       },
                       cor: kAzulClaro,
                       filhoContainer: Text(
-                        date,
+                        dataLocalAutuacao,
                         style: kEstiloTextoContainerPersonalizado.copyWith(fontSize: 14),
                       ),
                     ),),
                   ],
                 ),
-                SizedBox(height: 10,),
-                Text("Irregularidade Constatada:"),
+                SizedBox(height: 20,),
+                Divider(color: kCinzaClaro, height: 30, thickness: 2,),
+                SizedBox(height: 5,),
+                Text("Cominação Legal", style: kTextosPrincipaisTelaCadastro),
+
+                SizedBox(height: 20,),
+                Row(
+                  children: [
+                    Expanded(child: ContainerPersonalizado(
+                      aoPressionar: () async {
+                        TimeOfDay? newTime = await obterHora(context);
+
+                        if (newTime == null) return;
+
+                        setState(() {
+                          timeCominacaoLegal = newTime.toString();
+                        });
+                      },
+                      cor: kAzulClaro,
+                      filhoContainer: Text(
+                        timeCominacaoLegal,
+                        style: kEstiloTextoContainerPersonalizado.copyWith(fontSize: 14),
+                      ),
+                    ),),
+                    SizedBox(width: 5,),
+                    Expanded(child: ContainerPersonalizado(
+                      aoPressionar: () async {
+                        final newDate = await obterData(context);
+
+                        if (newDate == null) return;
+
+                        setState(() {
+                          dataCominacaoLegal = DateFormat('dd/MM/yyyy').format(newDate);
+                        });
+                      },
+                      cor: kAzulClaro,
+                      filhoContainer: Text(
+                        dataCominacaoLegal,
+                        style: kEstiloTextoContainerPersonalizado.copyWith(fontSize: 14),
+                      ),
+                    ),),
+                  ],
+                ),
+                SizedBox(height: 20,),
+                Text("Irregularidade Constatada:", style: kTextosPrincipaisTelaCadastro.copyWith(fontSize: 16),),
                 SizedBox(height: 3,),
                 TextFormField(
-                  decoration: kDecoracaoDeCampos,
-                  maxLines: 20,
-                )
+                  decoration: kDecoracaoDeCampos.copyWith(
+                      hintText: 'Descreva aqui',
+                      hintStyle: kTextosPrincipaisTelaCadastro.copyWith(fontSize: 14)
+                  ),
+                  maxLines: 10,
+                ),
+                SizedBox(height: 20,),
+                Divider(color: kCinzaClaro, height: 30, thickness: 2,),
+                SizedBox(height: 5,),
+
+                Text('Autuante', style: kTextosPrincipaisTelaCadastro,),
+                SizedBox(height: 20,),
+                MeuTextField(hintTextInput: 'Nome do Autuante', style: kTextosDosInputsTelaCadastro),
+                SizedBox(height: 10,),
+                MeuTextField(hintTextInput: 'Cargo', style: kTextosDosInputsTelaCadastro),
+
+                SizedBox(height: 20,),
+                Divider(color: kCinzaClaro, height: 30, thickness: 2,),
+                SizedBox(height: 5,),
+
+                Text('Autuado', style: kTextosPrincipaisTelaCadastro,),
+                SizedBox(height: 20,),
+                MeuTextField(hintTextInput: 'Nome do Autuado', style: kTextosDosInputsTelaCadastro),
+                SizedBox(height: 10,),
+                Text('Recebi a 3º via nesta Data:', style: kTextosPrincipaisTelaCadastro.copyWith(fontSize: 15),),
+                SizedBox(height: 5,),
+                ContainerPersonalizado(
+                  aoPressionar: () async {
+                    final newDate = await obterData(context);
+
+                    if (newDate == null) return;
+
+                    setState(() {
+                      data3via = DateFormat('dd/MM/yyyy').format(newDate);
+                    });
+                  },
+                  cor: kAzulClaro,
+                  filhoContainer: Text(
+                    data3via,
+                    style: kEstiloTextoContainerPersonalizado.copyWith(fontSize: 18),
+                  ),
+                ),
               ],
             ),
           ),

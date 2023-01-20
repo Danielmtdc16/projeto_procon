@@ -5,8 +5,10 @@ const Color kCinzaClaro = Color(0xFFABABAB);
 const Color kCinzaMuitoClaro = Color(0xFFE4E4E4);
 const Color kAzulClaro = Color(0xFF4BA9BA);
 
-const TextStyle ktextoLogin = TextStyle(fontSize: 30, fontFamily: 'Poppins', color: kVermelha);
-const TextStyle kdescricao = TextStyle(fontWeight: FontWeight.w300, color: kCinzaClaro);
+const TextStyle kTextoLogin = TextStyle(fontSize: 30, fontFamily: 'Poppins', color: kVermelha);
+const TextStyle kTextosPrincipaisTelaCadastro = TextStyle(fontFamily: 'Poppins', fontSize: 20);
+const TextStyle kTextosDosInputsTelaCadastro = TextStyle(fontFamily: 'Poppins', fontSize: 13);
+const TextStyle kTextoDescricao = TextStyle(fontWeight: FontWeight.w300, color: kCinzaClaro);
 const TextStyle kEstiloTextoContainerPersonalizado = TextStyle(fontSize: 20, color: Colors.white, fontFamily: 'Poppins', fontWeight: FontWeight.w300);
 
 const double kalturaEspacamento = 30;

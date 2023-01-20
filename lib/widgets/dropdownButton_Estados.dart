@@ -23,7 +23,6 @@ class _DropdownButton_EstadosState extends State<DropdownButton_Estados> {
           borderRadius: const BorderRadius.all(Radius.circular(4)),
           decoration: kDecoracaoDeCampos,
           isExpanded: true,
-          hint: const Text('Selecione o Estado'),
           value: dropdownValue,
           icon: const Icon(Icons.arrow_downward),
           elevation: 20,
@@ -35,7 +34,7 @@ class _DropdownButton_EstadosState extends State<DropdownButton_Estados> {
           items: klistaDeEstados.map<DropdownMenuItem<String>>((String value){
             return DropdownMenuItem<String>(
               value: value,
-              child: Text(value),
+              child: Text(value, style: kTextosDosInputsTelaCadastro,),
             );
           }).toList(),
       ),

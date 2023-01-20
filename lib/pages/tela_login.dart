@@ -41,8 +41,8 @@ class _TelaLoginState extends State<TelaLogin> {
                 child: Image(image: AssetImage('assets/imagens/logo-mppi-procon-2.png'),),
               ),
               const SizedBox(height: 50,),
-              const Text("Efetue o Login", style: ktextoLogin),
-              const Text("Insira seu Email e Senha nos campos abaixo", style: kdescricao),
+              const Text("Efetue o Login", style: kTextoLogin),
+              const Text("Insira seu Email e Senha nos campos abaixo", style: kTextoDescricao),
               const SizedBox(height: kalturaEspacamento,),
               TextFormField(
                 decoration: InputDecoration(hintText: 'Email'),
