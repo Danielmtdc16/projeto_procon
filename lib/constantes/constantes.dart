@@ -15,10 +15,11 @@ const double kalturaEspacamento = 30;
 const double kalturaContainerPersonalizado = 50;
 const double kalturaCardDeAutuacao = 80;
 
-const List<String> klistaDeEstados = <String>['Estado','PI', 'AL', 'AP',
+const List<String> klistaDeEstados = <String>['PI', 'AL', 'AP',
 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG',
 'PA', 'PB', 'PR', 'PE', 'AC', 'RJ', 'RN', 'RS', 'RO', 'RR',
 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'];
+const List<String> klistaTiposInscricao = <String>['Inscrição Municipal', 'Inscrição Estadual'];
 
 const InputDecoration kDecoracaoDeCampos = InputDecoration(
   hintStyle: TextStyle(color: Colors.black54),

@@ -3,7 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:projeto_procon/constantes/constantes.dart';
 import '../widgets/text_field.dart';
 import '../widgets/container_personalizado.dart';
-import '../widgets/dropdownButton_Estados.dart';
+import '../widgets/select_estados.dart';
+import '../widgets/select_tipos_inscricao.dart';
 
 class TelaCadastroAuto extends StatefulWidget {
   const TelaCadastroAuto({Key? key}) : super(key: key);
@@ -44,14 +45,7 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
                 SizedBox(height: 10,),
                 MeuTextField(hintTextInput: "CNPJ/CPF", style: kTextosDosInputsTelaCadastro,),
                 SizedBox(height: 10,),
-                Row(
-                  children: [
-                    Checkbox(value: true, onChanged: (value){}),
-                    Text("I.M.", style: kTextosDosInputsTelaCadastro,),
-                    Checkbox(value: true, onChanged: (value){}),
-                    Text("I.E.", style: kTextosDosInputsTelaCadastro,)
-                  ],
-                ),
+                SelectTipoInscricao(),
                 SizedBox(height: 10,),
                 MeuTextField(hintTextInput: "FAX", style: kTextosDosInputsTelaCadastro,),
                 SizedBox(height: 10,),
@@ -67,7 +61,7 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
                   children: [
                     Expanded(child: MeuTextField(hintTextInput: "Bairro", style: kTextosDosInputsTelaCadastro,),),
                     SizedBox(width: 5,),
-                    Expanded(child: DropdownButton_Estados()),
+                    Expanded(child: SelectEstados()),
                   ],
                 ),
                 SizedBox(height: 10,),
@@ -93,7 +87,7 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
                   children: [
                     Expanded(child: MeuTextField(hintTextInput: "Bairro", style: kTextosDosInputsTelaCadastro,),),
                     SizedBox(width: 5,),
-                    Expanded(child: DropdownButton_Estados()),
+                    Expanded(child: SelectEstados()),
                   ],
                 ),
                 SizedBox(height: 10,), 
