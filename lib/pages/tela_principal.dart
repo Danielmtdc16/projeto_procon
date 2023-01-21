@@ -18,10 +18,13 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
         title: const Text("PROCON"),
         centerTitle: true,
       ),
-      body: ListView(
-        children: [
-          CardDeAutuacao(autuacao: Autuacao(dateTime: DateTime.now())),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ListView(
+          children: [
+            CardDeAutuacao(autuacao: Autuacao(dateTime: DateTime.now())),
+          ],
+        ),
       ),
     );
   }
