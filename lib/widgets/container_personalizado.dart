@@ -5,17 +5,18 @@ class ContainerPersonalizado extends StatelessWidget {
 
   final Color cor;
   final Widget filhoContainer;
-  final VoidCallback aoPressionar;
+  final VoidCallback? aoPressionar;
+  Function()? function;
 
-  const ContainerPersonalizado({
-    Key? key, required this.aoPressionar, required this.cor,
-    required this.filhoContainer,
+  ContainerPersonalizado({
+    Key? key, this.aoPressionar, required this.cor,
+    required this.filhoContainer, this.function
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: aoPressionar,
+      onTap: function,
       child: Container(
         alignment: Alignment.center,
         height: kalturaContainerPersonalizado,

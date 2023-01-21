@@ -5,7 +5,6 @@ import 'package:projeto_procon/util/messages.dart';
 import 'package:projeto_procon/util/nav.dart';
 import '../constantes/constantes.dart';
 import '../widgets/text_field.dart';
-import '../widgets/container_personalizado.dart';
 
 class TelaLogin extends StatefulWidget {
   const TelaLogin({Key? key}) : super(key: key);
@@ -44,28 +43,29 @@ class _TelaLoginState extends State<TelaLogin> {
               const Text("Efetue o Login", style: kTextoLogin),
               const Text("Insira seu Email e Senha nos campos abaixo", style: kTextoDescricao),
               const SizedBox(height: kalturaEspacamento,),
-              TextFormField(
-                decoration: InputDecoration(hintText: 'Email'),
+              MeuTextField(
+                hintTextInput: "Email",
+                style: kTextosDosInputsTelaCadastro,
                 controller: textUsername,
               ),
               const SizedBox(height: 10,),
-              TextFormField(
-                obscureText: true,
-                decoration: InputDecoration(hintText: 'Senha'),
+              MeuTextField(
+                hintTextInput: "Senha",
+                style: kTextosDosInputsTelaCadastro,
                 controller: textPassword,
               ),
               const SizedBox(height: kalturaEspacamento,),
-              Container(
+              SizedBox(
                 height: 46,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     primary: kVermelha,
-                    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
+                    padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 5),
                     shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(30.0),
+                      borderRadius: BorderRadius.circular(30.0),
                     ),
                   ),
-                  child: Text(
+                  child: const Text(
                     "Login",
                     style: TextStyle(
                       color: Colors.white,

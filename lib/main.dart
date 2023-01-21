@@ -12,7 +12,7 @@ void main() {
       const Locale('en'),
       const Locale('pt')
     ],
-    home: TelaCadastroAuto(),
+    home: TelaLogin(),
   ));
 }
 

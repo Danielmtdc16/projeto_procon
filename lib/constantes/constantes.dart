@@ -33,3 +33,4 @@ const InputDecoration kDecoracaoDeCampos = InputDecoration(
   filled: true,
   floatingLabelBehavior: FloatingLabelBehavior.never,
 );
+
