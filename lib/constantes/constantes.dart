@@ -4,6 +4,7 @@ const Color kVermelha = Color(0xFFCB0912);
 const Color kCinzaClaro = Color(0xFFABABAB);
 const Color kCinzaMuitoClaro = Color(0xFFE4E4E4);
 const Color kAzulClaro = Color(0xFF4BA9BA);
+const Color kAmareloClaro = Color(0xFFFFF8E1);
 
 const TextStyle kTextoLogin = TextStyle(fontSize: 30, fontFamily: 'Poppins', color: kVermelha);
 const TextStyle kTextosPrincipaisTelaCadastro = TextStyle(fontFamily: 'Poppins', fontSize: 20);

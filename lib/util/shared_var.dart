@@ -5,7 +5,7 @@ class SharedVar {
 
   static Future<void> setNome(String nome) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("nomeUserr", nome);
+    prefs.setString("nomeUser", nome);
   }
 
   static Future<String> getNome() async {
@@ -45,9 +45,27 @@ class SharedVar {
     String nome = prefs.getString('nomeUser') ?? "";
     String email = prefs.getString('emailUser') ?? "";
     String password = prefs.getString('passwordUser') ?? "";
-
-
     return User(int.parse(id), nome, email, password);
+  }
+
+  static Future<void> setAutos(String json) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("autos", json);
+  }
+
+  static Future<String> getAutos() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('autos') ?? "";
+  }
+
+  static Future<void> setOffline(String offline) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("offline", offline);
+  }
+
+  static Future<String> getOffline() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('offline') ?? "";
   }
 
 

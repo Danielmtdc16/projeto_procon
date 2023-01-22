@@ -4,15 +4,15 @@ import '../constantes/constantes.dart';
 import 'package:intl/intl.dart';
 
 class CardDeAutuacao extends StatelessWidget {
-  
-  const CardDeAutuacao({Key? key, required this.autuacao}) : super(key: key);
+  const CardDeAutuacao({Key? key, required this.autuacao, this.colorCard = kCinzaMuitoClaro}) : super(key: key);
   
   final Autuacao autuacao;
+  final Color colorCard;
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: kCinzaMuitoClaro,
+      color: colorCard,
       child: InkWell(
         onTap: () {
           //_showAutuacao(context, _aulas[index]);

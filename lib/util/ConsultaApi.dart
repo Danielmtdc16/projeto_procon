@@ -29,24 +29,37 @@ class ConsultaApi {
   }
 
   Future<List<Autuacao>> getAutuacoes() async{
-
     var _autuacoes = <Autuacao>[];
     try{
       var url = Uri.parse(ConsultaApi.url_webservice+"/listanotaautos/0/0/0");
       var response = await http.get(url);
       if(response.statusCode == 200){
         var autuacaoesJson = convert.jsonDecode(response.body);
+        await SharedVar.setAutos(response.body);
+        await SharedVar.setOffline("0");
         for(var autuacaoJson in autuacaoesJson){
           _autuacoes.add(Autuacao.fromJson(autuacaoJson));
         }
+      }else{
+        await SharedVar.setOffline("1");
       }
     }catch(e){
+      await SharedVar.setOffline("1");
+    }
+    return _autuacoes;
+  }
+
+  Future<List<Autuacao>> getAutuacoesOffline() async{
+    var _autuacoes = <Autuacao>[];
+    var autuacaoesJson = convert.jsonDecode(await SharedVar.getAutos());
+    await SharedVar.setOffline("1");
+    for(var autuacaoJson in autuacaoesJson){
+      _autuacoes.add(Autuacao.fromJson(autuacaoJson));
     }
     return _autuacoes;
   }
 
   static Future<int> salvar_auto(Autuacao autuacao, context) async {
-    print("servidor:");
     var params = convert.jsonEncode({
       'notaauto': autuacao.toJson()});
     int idAuto = 0;
@@ -56,7 +69,6 @@ class ConsultaApi {
           Uri.parse(url_webservice+"/savenotaauto"),headers: headers, body: params);
       if (response.statusCode == 200) {
         var jsonResponse = convert.jsonDecode(response.body);
-        print(jsonResponse);
         idAuto = Autuacao
             .fromJson(jsonResponse)
             .id;

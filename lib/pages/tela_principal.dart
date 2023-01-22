@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:projeto_procon/constantes/constantes.dart';
 import 'package:projeto_procon/models/autuacao.dart';
 import 'package:projeto_procon/pages/tela_cadastro_autuacao.dart';
 import 'package:projeto_procon/util/ConsultaApi.dart';
 import 'package:projeto_procon/util/nav.dart';
 import 'package:projeto_procon/util/progress_carregamento.dart';
+import 'package:projeto_procon/util/shared_var.dart';
 import 'package:projeto_procon/widgets/menu_user.dart';
 import '../widgets/card_de_autuacao.dart';
 import 'package:http/http.dart' as http;
@@ -20,10 +22,18 @@ class TelaPrincipal extends StatefulWidget {
 class _TelaPrincipalState extends State<TelaPrincipal> {
   List<Autuacao> _list_autuacoes = <Autuacao>[];
   late bool isLoading = false;
+  late Color offlineColor = kCinzaMuitoClaro;
 
   Future<List<Autuacao>> getServidor() async{
     isLoading = true;
-    var _autuacoes = ConsultaApi().getAutuacoes();
+    bool result = await InternetConnectionChecker().hasConnection;
+    var _autuacoes;
+    if(result==true) {
+      _autuacoes = ConsultaApi().getAutuacoes();
+    }else{
+      offlineColor = kAmareloClaro;
+      _autuacoes = ConsultaApi().getAutuacoesOffline();
+    }
     isLoading = false;
 
     return _autuacoes;
@@ -54,7 +64,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
             ]
       ),
       body: ListView.builder(itemBuilder: (context, index) {
-        return CardDeAutuacao(autuacao: _list_autuacoes[index]);
+        return CardDeAutuacao(autuacao: _list_autuacoes[index], colorCard: offlineColor);
       },
           itemCount: _list_autuacoes.length),
       bottomNavigationBar: BottomNavigationBar(
@@ -85,7 +95,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
     );
   }
   void _novoAuto(BuildContext context) {
-    pushAndRemoveUntil(context, TelaCadastroAuto());
+    push(context, TelaCadastroAuto());
   }
 
 }
