@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:projeto_procon/models/autuacao.dart';
 import 'package:projeto_procon/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:projeto_procon/util/shared_var.dart';
@@ -27,5 +28,22 @@ class ConsultaApi {
     }catch(e){
       return 3;
     }
+  }
+
+  Future<List<Autuacao>> getAutuacoes() async{
+
+    var _autuacoes = <Autuacao>[];
+    try{
+      var url = Uri.parse(ConsultaApi.url_webservice+"/listanotaautos/0/0/0");
+      var response = await http.get(url);
+      if(response.statusCode == 200){
+        var autuacaoesJson = json.decode(response.body);
+        for(var autuacaoJson in autuacaoesJson){
+          _autuacoes.add(Autuacao.fromJson(autuacaoJson));
+        }
+      }
+    }catch(e){
+    }
+    return _autuacoes;
   }
 }
