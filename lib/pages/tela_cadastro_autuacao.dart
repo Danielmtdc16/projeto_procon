@@ -53,6 +53,16 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
 
   final GlobalKey<State> _keyLoader = GlobalKey<State>();
 
+  final _formKey = GlobalKey<FormState>();
+
+  final dropValueEmpresa = ValueNotifier('');
+  final dropValueResponsavel = ValueNotifier('');
+  final dropValueTipoInscricao = ValueNotifier('');
+
+  late String estadoEmpresa;
+  late String estadoResponsavel;
+  late String tipoInscricao;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,416 +78,507 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: SingleChildScrollView(
-            child: Column(
-              children: [
-                const Text("Dados da Empresa", style: kTextosPrincipaisTelaCadastro),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  const Text("Dados da Empresa", style: kTextosPrincipaisTelaCadastro),
 
-                const SizedBox(
-                  height: 10,
-                ),
-                MeuTextField(
-                  hintTextInput: "Razão Social",
-                  style: kTextosDosInputsTelaCadastro,
-                  controller: _razaoSocialController,
-                ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  MeuTextField(
+                    hintTextInput: "Razão Social",
+                    style: kTextosDosInputsTelaCadastro,
+                    controller: _razaoSocialController,
+                  ),
 
-                const SizedBox(
-                  height: 10,
-                ),
+                  const SizedBox(
+                    height: 10,
+                  ),
 
-                MeuTextField(
-                  hintTextInput: "Nome de Fantasia",
-                  style: kTextosDosInputsTelaCadastro,
-                  controller: _nomeFantasiaController,
-                ),
+                  MeuTextField(
+                    hintTextInput: "Nome de Fantasia",
+                    style: kTextosDosInputsTelaCadastro,
+                    controller: _nomeFantasiaController,
+                  ),
 
-                const SizedBox(
-                  height: 10,
-                ),
+                  const SizedBox(
+                    height: 10,
+                  ),
 
-                MeuTextField(
-                  hintTextInput: "Atividade",
-                  style: kTextosDosInputsTelaCadastro,
-                  controller: _atividadeController,
-                ),
+                  MeuTextField(
+                    hintTextInput: "Atividade",
+                    style: kTextosDosInputsTelaCadastro,
+                    controller: _atividadeController,
+                  ),
 
-                const SizedBox(
-                  height: 10,
-                ),
+                  const SizedBox(
+                    height: 10,
+                  ),
 
-                MeuTextField(
-                  hintTextInput: "CNPJ/CPF",
-                  style: kTextosDosInputsTelaCadastro,
-                  controller: _cnpjCpfController,
-                ),
+                  MeuTextField(
+                    hintTextInput: "CNPJ/CPF",
+                    style: kTextosDosInputsTelaCadastro,
+                    controller: _cnpjCpfController,
+                  ),
 
-                const SizedBox(
-                  height: 10,
-                ),
+                  const SizedBox(
+                    height: 10,
+                  ),
 
-                const SelectTipoInscricao(),
-
-                const SizedBox(
-                  height: 10,
-                ),
-                const MeuTextField(
-                  hintTextInput: "FAX",
-                  style: kTextosDosInputsTelaCadastro,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: MeuTextField(
-                        hintTextInput: "CEP",
-                        style: kTextosDosInputsTelaCadastro,
-                        controller: _cepEmpresaController,
+                ValueListenableBuilder(
+                  valueListenable: dropValueTipoInscricao,
+                  builder: (BuildContext context, String value, _){
+                    return SizedBox(
+                      height: 60,
+                      child: DropdownButtonFormField<String>(
+                        menuMaxHeight: 500,
+                        borderRadius: const BorderRadius.all(Radius.circular(4)),
+                        decoration: kDecoracaoDeCampos,
+                        isExpanded: true,
+                        hint: const Text('Tipo de Inscrição', style: kTextosDosInputsTelaCadastro,),
+                        value: value.isEmpty ? null : value,
+                        icon: const Icon(Icons.arrow_downward),
+                        elevation: 20,
+                        onChanged: (escolha) {
+                          dropValueTipoInscricao.value = escolha.toString();
+                          setState(() {
+                            tipoInscricao = escolha.toString();
+                          });
+                        },
+                        items: klistaTiposInscricao.map((op){
+                          return DropdownMenuItem(
+                            value: op,
+                            child: Text(op, style: kTextosDosInputsTelaCadastro,),
+                          );
+                        }).toList(),
                       ),
-                    ),
+                    );
+                  },),
 
-                    const SizedBox(
-                      width: 5,
-                    ),
-
-                    Expanded(
-                        child: ContainerPersonalizado(
-                      cor: kAzulClaro,
-                      filhoContainer: Text(
-                        "Consultar CEP",
-                        style: kEstiloTextoContainerPersonalizado.copyWith(
-                            fontSize: 15),
-                      ),
-                      aoPressionar: _searchCep,
-                    )),
-                  ],
-                ),
-
-                const SizedBox(
-                  height: 10,
-                ),
-
-                MeuTextField(
-                  hintTextInput: "Logradouro",
-                  style: kTextosDosInputsTelaCadastro,
-                  controller: _logradouroEmpresaController,
-                ),
-
-                const SizedBox(
-                  height: 10,
-                ),
-
-                Row(
-                  children: [
-                    Expanded(
-                      child: MeuTextField(
-                        hintTextInput: "Número",
-                        style: kTextosDosInputsTelaCadastro,
-                        controller: _logradouroEmpresaController,
-                        ),
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    Expanded(
-                      child: MeuTextField(
-                        hintTextInput: "Bairro",
-                        style: kTextosDosInputsTelaCadastro,
-                        controller: _bairroEmpresaController,
-                      ),
-                    ),
-                  ],
-                ),
-
-                const SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  children: [
-                     Expanded(
-                        child: MeuTextField(
-                          hintTextInput: "Cidade",
-                          style: kTextosDosInputsTelaCadastro,
-                          controller: _cidadeEmpresaController,
-                        ),
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    const Expanded(child: SelectEstados()),
-                ]
-              ),
-
-                const SizedBox(
-                  height: 20,
-                ),
-
-                const Divider(
-                  color: kCinzaClaro,
-                  height: 30,
-                  thickness: 2,
-                ),
-
-                const SizedBox(
-                  height: 5,
-                ),
-
-                const Text(
-                  "Dados do Responsável",
-                  style: kTextosPrincipaisTelaCadastro,
-                ),
-
-                const SizedBox(
-                  height: 10,
-                ),
-
-                MeuTextField(
-                  hintTextInput: "Nome",
-                  style: kTextosDosInputsTelaCadastro,
-                  controller: _nomeResponsavelController,
-                ),
-
-                const SizedBox(
-                  height: 10,
-                ),
-
-                MeuTextField(
-                  hintTextInput: "CPF/RG",
-                  style: kTextosDosInputsTelaCadastro,
-                  controller: _cpfRgResponsavelController,
-                ),
-
-                const SizedBox(
-                  height: 10,
-                ),
-
-                Row(
-                  children: [
-                    Expanded(
-                      child: MeuTextField(
-                        hintTextInput: "CEP",
-                        style: kTextosDosInputsTelaCadastro,
-                        controller: _cepResponsavelController,
-                      ),
-                    ),
-
-                    const SizedBox(
-                      width: 5,
-                    ),
-
-                    Expanded(
-                      child: MeuTextField(
-                        hintTextInput: "Logradouro",
-                        style: kTextosDosInputsTelaCadastro,
-                        controller: _logradouroResponsavelController,
-                      ),
-                    )
-                  ],
-                ),
-
-                const SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: MeuTextField(
-                        hintTextInput: "Número",
-                        style: kTextosDosInputsTelaCadastro,
-                        controller: _numeroResponsavelController,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    Expanded(
-                      child: MeuTextField(
-                        hintTextInput: "Bairro",
-                        style: kTextosDosInputsTelaCadastro,
-                        controller: _bairroResponsavelController,
-                      ),
-                    ),
-                  ],
-                ),
-
-                const SizedBox(
-                  height: 10,
-                ),
-                Row(
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const MeuTextField(
+                    hintTextInput: "FAX",
+                    style: kTextosDosInputsTelaCadastro,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
                     children: [
                       Expanded(
                         child: MeuTextField(
-                          hintTextInput: "Cidade",
+                          hintTextInput: "CEP",
                           style: kTextosDosInputsTelaCadastro,
-                          controller: _cidadeResponsavelController,
+                          controller: _cepEmpresaController,
+                        ),
+                      ),
+
+                      const SizedBox(
+                        width: 5,
+                      ),
+
+                      Expanded(
+                          child: ContainerPersonalizado(
+                        cor: kAzulClaro,
+                        filhoContainer: Text(
+                          "Consultar CEP",
+                          style: kEstiloTextoContainerPersonalizado.copyWith(
+                              fontSize: 15),
+                        ),
+                        aoPressionar: _searchCep,
+                      )),
+                    ],
+                  ),
+
+                  const SizedBox(
+                    height: 10,
+                  ),
+
+                  MeuTextField(
+                    hintTextInput: "Logradouro",
+                    style: kTextosDosInputsTelaCadastro,
+                    controller: _logradouroEmpresaController,
+                  ),
+
+                  const SizedBox(
+                    height: 10,
+                  ),
+
+                  Row(
+                    children: [
+                      Expanded(
+                        child: MeuTextField(
+                          hintTextInput: "Número",
+                          style: kTextosDosInputsTelaCadastro,
+                          controller: _logradouroEmpresaController,
+                          ),
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Expanded(
+                        child: MeuTextField(
+                          hintTextInput: "Bairro",
+                          style: kTextosDosInputsTelaCadastro,
+                          controller: _bairroEmpresaController,
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                       Expanded(
+                          child: MeuTextField(
+                            hintTextInput: "Cidade",
+                            style: kTextosDosInputsTelaCadastro,
+                            controller: _cidadeEmpresaController,
+                          ),
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Expanded(child: ValueListenableBuilder(
+                        valueListenable: dropValueEmpresa,
+                        builder: (BuildContext context, String value, _){
+                          return SizedBox(
+                            height: 60,
+                            child: DropdownButtonFormField<String>(
+                              menuMaxHeight: 500,
+                              borderRadius: const BorderRadius.all(Radius.circular(4)),
+                              decoration: kDecoracaoDeCampos,
+                              isExpanded: true,
+                              hint: const Text('Estados', style: kTextosDosInputsTelaCadastro,),
+                              value: value.isEmpty ? null : value,
+                              icon: const Icon(Icons.arrow_downward),
+                              elevation: 20,
+                              onChanged: (escolha){
+                                setState(() {
+                                  estadoEmpresa = escolha.toString();
+                                  print(estadoEmpresa);
+                                });
+                                dropValueEmpresa.value = escolha.toString();
+                              },
+                              items: klistaDeEstados.map((op){
+                                return DropdownMenuItem(
+                                  value: op,
+                                  child: Text(op, style: kTextosDosInputsTelaCadastro,),
+                                );
+                              }).toList(),
+                              validator: (value) => value == null ? "Campo Obrigatório" : null,
+                            ),
+                          );
+                        },
+                      ),),
+                  ]
+                ),
+
+                  const SizedBox(
+                    height: 20,
+                  ),
+
+                  const Divider(
+                    color: kCinzaClaro,
+                    height: 30,
+                    thickness: 2,
+                  ),
+
+                  const SizedBox(
+                    height: 5,
+                  ),
+
+                  const Text(
+                    "Dados do Responsável",
+                    style: kTextosPrincipaisTelaCadastro,
+                  ),
+
+                  const SizedBox(
+                    height: 10,
+                  ),
+
+                  MeuTextField(
+                    hintTextInput: "Nome",
+                    style: kTextosDosInputsTelaCadastro,
+                    controller: _nomeResponsavelController,
+                  ),
+
+                  const SizedBox(
+                    height: 10,
+                  ),
+
+                  MeuTextField(
+                    hintTextInput: "CPF/RG",
+                    style: kTextosDosInputsTelaCadastro,
+                    controller: _cpfRgResponsavelController,
+                  ),
+
+                  const SizedBox(
+                    height: 10,
+                  ),
+
+                  Row(
+                    children: [
+                      Expanded(
+                        child: MeuTextField(
+                          hintTextInput: "CEP",
+                          style: kTextosDosInputsTelaCadastro,
+                          controller: _cepResponsavelController,
+                        ),
+                      ),
+
+                      const SizedBox(
+                        width: 5,
+                      ),
+
+                      Expanded(
+                        child: MeuTextField(
+                          hintTextInput: "Logradouro",
+                          style: kTextosDosInputsTelaCadastro,
+                          controller: _logradouroResponsavelController,
+                        ),
+                      )
+                    ],
+                  ),
+
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: MeuTextField(
+                          hintTextInput: "Número",
+                          style: kTextosDosInputsTelaCadastro,
+                          controller: _numeroResponsavelController,
                         ),
                       ),
                       const SizedBox(
                         width: 5,
                       ),
-                      const Expanded(child: SelectEstados()),
-                    ]
-                ),
+                      Expanded(
+                        child: MeuTextField(
+                          hintTextInput: "Bairro",
+                          style: kTextosDosInputsTelaCadastro,
+                          controller: _bairroResponsavelController,
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                      children: [
+                        Expanded(
+                          child: MeuTextField(
+                            hintTextInput: "Cidade",
+                            style: kTextosDosInputsTelaCadastro,
+                            controller: _cidadeResponsavelController,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Expanded(child: ValueListenableBuilder(
+                          valueListenable: dropValueResponsavel,
+                          builder: (BuildContext context, String value, _){
+                            return SizedBox(
+                              height: 60,
+                              child: DropdownButtonFormField<String>(
+                                menuMaxHeight: 500,
+                                borderRadius: const BorderRadius.all(Radius.circular(4)),
+                                decoration: kDecoracaoDeCampos,
+                                isExpanded: true,
+                                hint: const Text('Estados', style: kTextosDosInputsTelaCadastro,),
+                                value: value.isEmpty ? null : value,
+                                icon: const Icon(Icons.arrow_downward),
+                                elevation: 20,
+                                onChanged: (escolha){
+                                  setState(() {
+                                    estadoResponsavel = escolha.toString();
+                                    print(estadoResponsavel);
+                                  });
+                                  dropValueResponsavel.value = escolha.toString();
+                                },
+                                items: klistaDeEstados.map((op){
+                                  return DropdownMenuItem(
+                                    value: op,
+                                    child: Text(op, style: kTextosDosInputsTelaCadastro,),
+                                  );
+                                }).toList(),
+                                validator: (value) => value == null ? "Campo Obrigatório" : null,
+                              ),
+                            );
+                          },
+                        ),),
+                      ]
+                  ),
 
 
-                const SizedBox(
-                  height: 10,
-                ),
+                  const SizedBox(
+                    height: 10,
+                  ),
 
-                MeuTextField(
-                  hintTextInput: "Telefone",
-                  style: kTextosDosInputsTelaCadastro,
-                  controller: _telefoneResponsavelController,
-                ),
-
-                const SizedBox(
-                  height: 20,
-                ),
-
-                const Divider(
-                  color: kCinzaClaro,
-                  height: 30,
-                  thickness: 2,
-                ),
-
-                const SizedBox(
-                  height: 5,
-                ),
-
-                const Text("Local de Autuação", style: kTextosPrincipaisTelaCadastro),
-
-                const SizedBox(
-                  height: 10,
-                ),
-
-                MeuTextField(
-                    hintTextInput: 'Local de Autuação',
+                  MeuTextField(
+                    hintTextInput: "Telefone",
                     style: kTextosDosInputsTelaCadastro,
-                    controller: _localAutuacaoController,
-                ),
+                    controller: _telefoneResponsavelController,
+                  ),
 
-                const SizedBox(
-                  height: 10,
-                ),
+                  const SizedBox(
+                    height: 20,
+                  ),
 
-                Row(
-                  children: [
-                    Expanded(
-                      child: ContainerPersonalizado(
-                        aoPressionar: () async {
-                          TimeOfDay? newTime = await obterHora(context);
+                  const Divider(
+                    color: kCinzaClaro,
+                    height: 30,
+                    thickness: 2,
+                  ),
 
-                          if (newTime == null) return;
+                  const SizedBox(
+                    height: 5,
+                  ),
 
-                          setState(() {
-                            timeLocalAutuacao = newTime.toString();
-                          });
-                        },
-                        cor: kAzulClaro,
-                        filhoContainer: Text(
-                          timeLocalAutuacao,
-                          style: kEstiloTextoContainerPersonalizado.copyWith(
-                              fontSize: 14),
+                  const Text("Local de Autuação", style: kTextosPrincipaisTelaCadastro),
+
+                  const SizedBox(
+                    height: 10,
+                  ),
+
+                  MeuTextField(
+                      hintTextInput: 'Local de Autuação',
+                      style: kTextosDosInputsTelaCadastro,
+                      controller: _localAutuacaoController,
+                  ),
+
+                  const SizedBox(
+                    height: 10,
+                  ),
+
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ContainerPersonalizado(
+                          aoPressionar: () async {
+                            TimeOfDay? newTime = await obterHora(context);
+
+                            if (newTime == null) return;
+
+                            setState(() {
+                              timeLocalAutuacao = newTime.toString();
+                            });
+                          },
+                          cor: kAzulClaro,
+                          filhoContainer: Text(
+                            timeLocalAutuacao,
+                            style: kEstiloTextoContainerPersonalizado.copyWith(
+                                fontSize: 14),
+                          ),
                         ),
                       ),
-                    ),
 
-                    const SizedBox(
-                      width: 5,
-                    ),
+                      const SizedBox(
+                        width: 5,
+                      ),
 
-                    Expanded(
-                      child: ContainerPersonalizado(
-                        aoPressionar: () async {
-                          final newDate = await obterData(context);
+                      Expanded(
+                        child: ContainerPersonalizado(
+                          aoPressionar: () async {
+                            final newDate = await obterData(context);
 
-                          if (newDate == null) return;
+                            if (newDate == null) return;
 
-                          setState(() {
-                            dataLocalAutuacao =
-                                DateFormat('dd/MM/yyyy').format(newDate);
-                          });
-                        },
-                        cor: kAzulClaro,
-                        filhoContainer: Text(
-                          dataLocalAutuacao,
-                          style: kEstiloTextoContainerPersonalizado.copyWith(
-                              fontSize: 14),
+                            setState(() {
+                              dataLocalAutuacao =
+                                  DateFormat('dd/MM/yyyy').format(newDate);
+                            });
+                          },
+                          cor: kAzulClaro,
+                          filhoContainer: Text(
+                            dataLocalAutuacao,
+                            style: kEstiloTextoContainerPersonalizado.copyWith(
+                                fontSize: 14),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
 
-                const SizedBox(
-                  height: 20,
-                ),
+                  const SizedBox(
+                    height: 20,
+                  ),
 
-                const Divider(
-                  color: kCinzaClaro,
-                  height: 30,
-                  thickness: 2,
-                ),
+                  const Divider(
+                    color: kCinzaClaro,
+                    height: 30,
+                    thickness: 2,
+                  ),
 
-                const SizedBox(
-                  height: 5,
-                ),
+                  const SizedBox(
+                    height: 5,
+                  ),
 
-                const Text("Cominação Legal", style: kTextosPrincipaisTelaCadastro),
+                  const Text("Cominação Legal", style: kTextosPrincipaisTelaCadastro),
 
-                const SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "Irregularidade Constatada:",
-                  style: kTextosPrincipaisTelaCadastro.copyWith(fontSize: 16),
-                ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    "Irregularidade Constatada:",
+                    style: kTextosPrincipaisTelaCadastro.copyWith(fontSize: 16),
+                  ),
 
-                const SizedBox(
-                  height: 3,
-                ),
+                  const SizedBox(
+                    height: 3,
+                  ),
 
-                MeuTextField(
-                  hintTextInput: 'Descreva aqui',
-                  style: kTextosDosInputsTelaCadastro,
-                  controller: _irregularidadeController,
-                  maxLines: 10,
-                ),
+                  MeuTextField(
+                    hintTextInput: 'Descreva aqui',
+                    style: kTextosDosInputsTelaCadastro,
+                    controller: _irregularidadeController,
+                    maxLines: 10,
+                  ),
 
-                const SizedBox(
-                  height: 20,
-                ),
+                  const SizedBox(
+                    height: 20,
+                  ),
 
-                const Divider(
-                  color: kCinzaClaro,
-                  height: 30,
-                  thickness: 2,
+                  const Divider(
+                    color: kCinzaClaro,
+                    height: 30,
+                    thickness: 2,
+                  ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: kAzulClaro,
+                  padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 5),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
                 ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: kAzulClaro,
-                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
-                shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(30.0),
+                child: const Text(
+                  "Salvar Auto",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                  ),
                 ),
+                onPressed: () {
+                  if (_formKey.currentState!.validate()){
+                    _onClickSalvar(context);
+                  }
+                },
               ),
-              child: Text(
-                "Salvar Auto",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22,
-                ),
+                ],
               ),
-              onPressed: () {
-                _onClickSalvar(context);
-              },
-            ),
-
-
-
-
-              ],
             ),
           ),
         ),
@@ -490,29 +591,29 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
     if(verificar_campos()){
       Messages.showLoadingDialog(context, _keyLoader);
       Autuacao autuacao = Autuacao(id: 0,
-          razaosocial: "a",
-          nome_fantasia: "a",
-          atividade: "a",
-          cnpj_cpf: "a",
-          tipo_inscricao: "a",
-          telefone1: "a",
-          cep: "a",
-          logradouro: "a",
-          cidade: "a",
-          estado: "a",
-          responsavel: "a",
-          cpf_rg: "a",
-          cep_responsavel: "a",
-          logradouro_responsavel: "a",
-          numero_responsavel: "a",
-          bairro_responsavel: "a",
-          cidade_responsavel: "a",
-          estado_responsavel: "a",
-          telefone_responsavel: "a",
-          local_autuacao: "a",
+          razaosocial: _razaoSocialController.text,
+          nome_fantasia: _nomeFantasiaController.text,
+          atividade: _atividadeController.text,
+          cnpj_cpf: _cnpjCpfController.text,
+          tipo_inscricao: tipoInscricao,
+          telefone1: _telefoneResponsavelController.text,
+          cep: _cepEmpresaController.text,
+          logradouro: _logradouroEmpresaController.text,
+          cidade: _cidadeEmpresaController.text,
+          estado: estadoEmpresa,
+          responsavel: _nomeResponsavelController.text,
+          cpf_rg: _cpfRgResponsavelController.text,
+          cep_responsavel: _cepResponsavelController.text,
+          logradouro_responsavel: _logradouroResponsavelController.text,
+          numero_responsavel: _numeroResponsavelController.text,
+          bairro_responsavel: _bairroResponsavelController.text,
+          cidade_responsavel: _cidadeResponsavelController.text,
+          estado_responsavel: estadoResponsavel,
+          telefone_responsavel: _telefoneResponsavelController.text,
+          local_autuacao: _localAutuacaoController.text,
           data_autuacao:  DateTime.now(),
           hora:  DateTime.now(),
-          comunicacao_legal: "a",
+          comunicacao_legal: _irregularidadeController.text,
           user_id: 1,
           inicialpreenchimento_id: 1,
           assinado: 0,
@@ -547,7 +648,6 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
     final cep = _cepEmpresaController.text;
 
     final resultCep = await ConsultaCEP.fetchCep(cep: cep);
-    // Exibindo somente a localidade no terminal
 
     setState(() {
       _cepEmpresaController.text = resultCep.cep;

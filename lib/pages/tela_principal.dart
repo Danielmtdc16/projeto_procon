@@ -53,10 +53,13 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
             MenuUser()
             ]
       ),
-      body: ListView.builder(itemBuilder: (context, index) {
-        return CardDeAutuacao(autuacao: _list_autuacoes[index]);
-      },
-          itemCount: _list_autuacoes.length),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ListView.builder(itemBuilder: (context, index) {
+          return CardDeAutuacao(autuacao: _list_autuacoes[index]);
+        },
+            itemCount: _list_autuacoes.length),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 0,
         items: [

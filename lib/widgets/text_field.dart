@@ -29,6 +29,12 @@ class MeuTextField extends StatelessWidget {
       style: style,
       controller: controller,
       maxLines: maxLines,
+      validator: (value){
+        if (value == null || value.isEmpty){
+          return 'Campo Obrigatório!';
+        }
+        return null;
+      },
     );
   }
 }
