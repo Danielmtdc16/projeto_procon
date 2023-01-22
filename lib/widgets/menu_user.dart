@@ -4,11 +4,14 @@ import 'package:projeto_procon/util/ConsultaApi.dart';
 import 'package:projeto_procon/util/nav.dart';
 import 'package:projeto_procon/util/shared_var.dart';
 class MenuUser extends StatelessWidget {
-
+  String _nome = "";
+  Future init() async {
+    _nome = await SharedVar.getNome();
+  }
 
   @override
   Widget build(BuildContext context) {
-
+    init();
     return PopupMenuButton(
       // add icon, by default "3 dot" icon
       // icon: Icon(Icons.book)
@@ -16,7 +19,7 @@ class MenuUser extends StatelessWidget {
           return [
             PopupMenuItem<int>(
               value: 0,
-              child: Text(ConsultaApi.nome_user),
+              child: Text(_nome),
             ),
             PopupMenuItem<int>(
               value: 1,

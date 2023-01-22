@@ -8,7 +8,6 @@ import 'package:projeto_procon/util/shared_var.dart';
 class ConsultaApi {
   static var url_webservice = 'http://apiprocon.inforpiaui.app.br/apinota';
   static var url_login = url_webservice + '/loginapi';
-  static var nome_user = "";
 
   static Future<int> login(String username, String password, context) async {
     try{
@@ -17,7 +16,6 @@ class ConsultaApi {
         var jsonResponse = json.decode(response.body);
         if (jsonResponse['id'] != null) {
           User user = User.fromJson(jsonResponse, password);
-          nome_user = user.nome;
           await SharedVar.setUser(user);
           return 1;
         }
