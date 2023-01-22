@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../constantes/constantes.dart';
 
 class SelectEstados extends StatefulWidget {
+
   const SelectEstados({Key? key}) : super(key: key);
 
   @override
@@ -36,6 +37,7 @@ class _SelectEstadosState extends State<SelectEstados> {
                 child: Text(op, style: kTextosDosInputsTelaCadastro,),
               );
             }).toList(),
+            validator: (value) => value == null ? "Campo Obrigatório" : null,
           ),
         );
       },
