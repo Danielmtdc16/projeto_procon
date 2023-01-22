@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:projeto_procon/constantes/constantes.dart';
+import 'package:projeto_procon/models/autuacao.dart';
+import 'package:projeto_procon/pages/tela_principal.dart';
+import 'package:projeto_procon/util/ConsultaApi.dart';
+import 'package:projeto_procon/util/messages.dart';
+import 'package:projeto_procon/util/nav.dart';
 import 'package:projeto_procon/widgets/menu_user.dart';
 import '../widgets/text_field.dart';
 import '../widgets/container_personalizado.dart';
@@ -36,6 +41,7 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
   final _cpfRgResponsavelController = TextEditingController();
   final _cepResponsavelController = TextEditingController();
   final _logradouroResponsavelController = TextEditingController();
+  final _numeroResponsavelController = TextEditingController();
   final _bairroResponsavelController = TextEditingController();
   final _cidadeResponsavelController = TextEditingController();
   final _telefoneResponsavelController = TextEditingController();
@@ -44,6 +50,8 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
   final _nomeAutuanteController = TextEditingController();
   final _cargoAutuanteController = TextEditingController();
   final _nomeAutuadoController = TextEditingController();
+
+  final GlobalKey<State> _keyLoader = GlobalKey<State>();
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +70,11 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
           child: SingleChildScrollView(
             child: Column(
               children: [
+                const Text("Dados da Empresa", style: kTextosPrincipaisTelaCadastro),
+
+                const SizedBox(
+                  height: 10,
+                ),
                 MeuTextField(
                   hintTextInput: "Razão Social",
                   style: kTextosDosInputsTelaCadastro,
@@ -159,29 +172,42 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
                   children: [
                     Expanded(
                       child: MeuTextField(
+                        hintTextInput: "Número",
+                        style: kTextosDosInputsTelaCadastro,
+                        controller: _logradouroEmpresaController,
+                        ),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Expanded(
+                      child: MeuTextField(
                         hintTextInput: "Bairro",
                         style: kTextosDosInputsTelaCadastro,
                         controller: _bairroEmpresaController,
                       ),
                     ),
-
-                    const SizedBox(
-                      width: 5,
-                    ),
-
-                    const Expanded(child: SelectEstados()),
                   ],
                 ),
 
                 const SizedBox(
                   height: 10,
                 ),
-
-                MeuTextField(
-                  hintTextInput: "Cidade",
-                  style: kTextosDosInputsTelaCadastro,
-                  controller: _cidadeEmpresaController,
-                ),
+                Row(
+                  children: [
+                     Expanded(
+                        child: MeuTextField(
+                          hintTextInput: "Cidade",
+                          style: kTextosDosInputsTelaCadastro,
+                          controller: _cidadeEmpresaController,
+                        ),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    const Expanded(child: SelectEstados()),
+                ]
+              ),
 
                 const SizedBox(
                   height: 20,
@@ -253,9 +279,18 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
                 const SizedBox(
                   height: 10,
                 ),
-
                 Row(
                   children: [
+                    Expanded(
+                      child: MeuTextField(
+                        hintTextInput: "Número",
+                        style: kTextosDosInputsTelaCadastro,
+                        controller: _numeroResponsavelController,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
                     Expanded(
                       child: MeuTextField(
                         hintTextInput: "Bairro",
@@ -263,24 +298,28 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
                         controller: _bairroResponsavelController,
                       ),
                     ),
-
-                    const SizedBox(
-                      width: 5,
-                    ),
-
-                    const Expanded(child: SelectEstados()),
                   ],
                 ),
 
                 const SizedBox(
                   height: 10,
                 ),
-
-                MeuTextField(
-                  hintTextInput: "Cidade",
-                  style: kTextosDosInputsTelaCadastro,
-                  controller: _cidadeResponsavelController,
+                Row(
+                    children: [
+                      Expanded(
+                        child: MeuTextField(
+                          hintTextInput: "Cidade",
+                          style: kTextosDosInputsTelaCadastro,
+                          controller: _cidadeResponsavelController,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      const Expanded(child: SelectEstados()),
+                    ]
                 ),
+
 
                 const SizedBox(
                   height: 10,
@@ -390,60 +429,6 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
                 const SizedBox(
                   height: 20,
                 ),
-
-                Row(
-                  children: [
-                    Expanded(
-                      child: ContainerPersonalizado(
-                        aoPressionar: () async {
-                          TimeOfDay? newTime = await obterHora(context);
-
-                          if (newTime == null) return;
-
-                          setState(() {
-                            timeCominacaoLegal = newTime.toString();
-                          });
-                        },
-                        cor: kAzulClaro,
-                        filhoContainer: Text(
-                          timeCominacaoLegal,
-                          style: kEstiloTextoContainerPersonalizado.copyWith(
-                              fontSize: 14),
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(
-                      width: 5,
-                    ),
-
-                    Expanded(
-                      child: ContainerPersonalizado(
-                        aoPressionar: () async {
-                          final newDate = await obterData(context);
-
-                          if (newDate == null) return;
-
-                          setState(() {
-                            dataCominacaoLegal =
-                                DateFormat('dd/MM/yyyy').format(newDate);
-                          });
-                        },
-                        cor: kAzulClaro,
-                        filhoContainer: Text(
-                          dataCominacaoLegal,
-                          style: kEstiloTextoContainerPersonalizado.copyWith(
-                              fontSize: 14),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-
-                const SizedBox(
-                  height: 20,
-                ),
-
                 Text(
                   "Irregularidade Constatada:",
                   style: kTextosPrincipaisTelaCadastro.copyWith(fontSize: 16),
@@ -469,102 +454,94 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
                   height: 30,
                   thickness: 2,
                 ),
-
-                const SizedBox(
-                  height: 5,
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: kAzulClaro,
+                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
+                shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(30.0),
                 ),
-
-                const Text(
-                  'Autuante',
-                  style: kTextosPrincipaisTelaCadastro,
+              ),
+              child: Text(
+                "Salvar Auto",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 22,
                 ),
+              ),
+              onPressed: () {
+                _onClickSalvar(context);
+              },
+            ),
 
-                const SizedBox(
-                  height: 20,
-                ),
 
-                MeuTextField(
-                    hintTextInput: 'Nome do Autuante',
-                    style: kTextosDosInputsTelaCadastro,
-                    controller: _nomeAutuanteController,
-                ),
 
-                const SizedBox(
-                  height: 10,
-                ),
 
-                MeuTextField(
-                    hintTextInput: 'Cargo',
-                    style: kTextosDosInputsTelaCadastro,
-                    controller: _cargoAutuanteController,
-                ),
-
-                const SizedBox(
-                  height: 20,
-                ),
-
-                const Divider(
-                  color: kCinzaClaro,
-                  height: 30,
-                  thickness: 2,
-                ),
-
-                const SizedBox(
-                  height: 5,
-                ),
-
-                const Text(
-                  'Autuado',
-                  style: kTextosPrincipaisTelaCadastro,
-                ),
-
-                const SizedBox(
-                  height: 20,
-                ),
-
-                MeuTextField(
-                    hintTextInput: 'Nome do Autuado',
-                    style: kTextosDosInputsTelaCadastro,
-                    controller: _nomeAutuadoController,
-                ),
-
-                const SizedBox(
-                  height: 10,
-                ),
-
-                Text(
-                  'Recebi a 3º via nesta Data:',
-                  style: kTextosPrincipaisTelaCadastro.copyWith(fontSize: 15),
-                ),
-
-                const SizedBox(
-                  height: 5,
-                ),
-
-                ContainerPersonalizado(
-                  aoPressionar: () async {
-                    final newDate = await obterData(context);
-
-                    if (newDate == null) return;
-
-                    setState(() {
-                      data3via = DateFormat('dd/MM/yyyy').format(newDate);
-                    });
-                  },
-                  cor: kAzulClaro,
-                  filhoContainer: Text(
-                    data3via,
-                    style: kEstiloTextoContainerPersonalizado.copyWith(
-                        fontSize: 18),
-                  ),
-                ),
               ],
             ),
           ),
         ),
       ),
     );
+
   }
+
+  void _onClickSalvar(context) async {
+    if(verificar_campos()){
+      Messages.showLoadingDialog(context, _keyLoader);
+      Autuacao autuacao = Autuacao(id: 0,
+          razaosocial: "a",
+          nome_fantasia: "a",
+          atividade: "a",
+          cnpj_cpf: "a",
+          tipo_inscricao: "a",
+          telefone1: "a",
+          cep: "a",
+          logradouro: "a",
+          cidade: "a",
+          estado: "a",
+          responsavel: "a",
+          cpf_rg: "a",
+          cep_responsavel: "a",
+          logradouro_responsavel: "a",
+          numero_responsavel: "a",
+          bairro_responsavel: "a",
+          cidade_responsavel: "a",
+          estado_responsavel: "a",
+          telefone_responsavel: "a",
+          local_autuacao: "a",
+          data_autuacao:  DateTime.now(),
+          hora:  DateTime.now(),
+          comunicacao_legal: "a",
+          user_id: 1,
+          inicialpreenchimento_id: 1,
+          assinado: 0,
+          email_autuado: "a",
+          );
+      int resp = await ConsultaApi.salvar_auto(autuacao, context);
+      Navigator.of(context,rootNavigator: true).pop();//close the dialoge;
+      if (resp != 0) {
+        pushAndRemoveUntil(context, TelaPrincipal());
+      }else{
+        Messages().msgErro("Sem acesso ao servidor!"+resp.toString(), context);
+      }
+    }
+  }
+
+  bool verificar_campos(){
+
+    return true;
+  }
+
+  bool verificar_campo(TextEditingController textController, FocusNode focusNode, String campo){
+    if(textController.text.toString().trim() == ""){
+      focusNode.requestFocus();
+      Messages().msgInfor("Preencha "+campo+"!", context);
+      return false;
+    }
+    return true;
+  }
+
 
   Future _searchCep() async {
     final cep = _cepEmpresaController.text;

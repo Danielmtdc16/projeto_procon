@@ -25,6 +25,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
     isLoading = true;
     var _autuacoes = ConsultaApi().getAutuacoes();
     isLoading = false;
+
     return _autuacoes;
   }
 
@@ -84,7 +85,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
     );
   }
   void _novoAuto(BuildContext context) {
-    push(context, TelaCadastroAuto());
+    pushAndRemoveUntil(context, TelaCadastroAuto());
   }
 
 }
