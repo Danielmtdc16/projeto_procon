@@ -182,15 +182,18 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
                         width: 5,
                       ),
                       Expanded(
-                          child: ContainerPersonalizado(
+                          child: SizedBox(
+                            height: 58,
+                            child: ContainerPersonalizado(
                         cor: kAzulClaro,
                         filhoContainer: Text(
-                          "Consultar CEP",
-                          style: kEstiloTextoContainerPersonalizado.copyWith(
-                              fontSize: 15),
+                            "Consultar CEP",
+                            style: kEstiloTextoContainerPersonalizado.copyWith(
+                                fontSize: 15),
                         ),
                         aoPressionar: _searchCep,
-                      )),
+                      ),
+                          )),
                     ],
                   ),
                   const SizedBox(
@@ -328,13 +331,27 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
                         width: 5,
                       ),
                       Expanded(
-                        child: MeuTextField(
-                          hintTextInput: "Logradouro",
-                          style: kTextosDosInputsTelaCadastro,
-                          controller: _logradouroResponsavelController,
-                        ),
-                      )
+                          child: SizedBox(
+                            height: 58,
+                            child: ContainerPersonalizado(
+                              cor: kAzulClaro,
+                              filhoContainer: Text(
+                                "Consultar CEP",
+                                style: kEstiloTextoContainerPersonalizado.copyWith(
+                                    fontSize: 15),
+                              ),
+                              aoPressionar: _searchCep,
+                            ),
+                          )),
                     ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  MeuTextField(
+                    hintTextInput: "Logradouro",
+                    style: kTextosDosInputsTelaCadastro,
+                    controller: _logradouroResponsavelController,
                   ),
                   const SizedBox(
                     height: 10,
