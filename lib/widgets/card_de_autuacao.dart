@@ -45,7 +45,7 @@ class CardDeAutuacao extends StatelessWidget {
                   child: Text(
                     autuacao.cnpj_cpf+"\n"+
                         autuacao.razaosocial+"\n"+
-                        autuacao.estado_responsavel
+                        autuacao.cidade
                     , style: TextStyle(color: Colors.white, fontSize: 15, fontFamily: 'Poppins'),),
                 )
               ]
