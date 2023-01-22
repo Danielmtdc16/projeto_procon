@@ -155,6 +155,8 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
                               ),
                             );
                           }).toList(),
+                          validator: (value) =>
+                          value == null ? "Campo Obrigatório" : null,
                         ),
                       );
                     },
@@ -191,7 +193,7 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
                             style: kEstiloTextoContainerPersonalizado.copyWith(
                                 fontSize: 15),
                         ),
-                        aoPressionar: _searchCep,
+                        aoPressionar: _searchCepEmpresa,
                       ),
                           )),
                     ],
@@ -340,7 +342,7 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
                                 style: kEstiloTextoContainerPersonalizado.copyWith(
                                     fontSize: 15),
                               ),
-                              aoPressionar: _searchCep,
+                              aoPressionar: _searchCepResponsavel,
                             ),
                           )),
                     ],
@@ -628,7 +630,7 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
     return true;
   }
 
-  Future _searchCep() async {
+  Future _searchCepEmpresa() async {
     final cep = _cepEmpresaController.text;
 
     final resultCep = await ConsultaCEP.fetchCep(cep: cep);
@@ -638,6 +640,18 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
       _logradouroEmpresaController.text = resultCep.logradouro;
       _bairroEmpresaController.text = resultCep.bairro;
       _cidadeEmpresaController.text = resultCep.localidade;
+    });
+  }
+  Future _searchCepResponsavel() async {
+    final cep = _cepResponsavelController.text;
+
+    final resultCep = await ConsultaCEP.fetchCep(cep: cep);
+
+    setState(() {
+      _cepResponsavelController.text = resultCep.cep;
+      _logradouroResponsavelController.text = resultCep.logradouro;
+      _bairroResponsavelController.text = resultCep.bairro;
+      _cidadeResponsavelController.text = resultCep.localidade;
     });
   }
 }
