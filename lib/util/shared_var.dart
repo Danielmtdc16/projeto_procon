@@ -1,4 +1,4 @@
-import 'package:projeto_procon/entities/user.dart';
+import 'package:projeto_procon/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedVar {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:projeto_procon/constantes/constantes.dart';
+import 'package:projeto_procon/widgets/menu_user.dart';
 import '../widgets/text_field.dart';
 import '../widgets/container_personalizado.dart';
 import '../widgets/select_estados.dart';
@@ -51,6 +52,9 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
         title: const Text("Cadastro Novo Auto"),
         centerTitle: true,
         backgroundColor: Colors.black,
+          actions: <Widget>[
+            MenuUser()
+          ]
       ),
       body: SafeArea(
         child: Padding(
