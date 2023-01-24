@@ -1,7 +1,11 @@
+
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:signature/signature.dart';
 import 'dart:ui' as ui;
 import 'package:projeto_procon/constantes/constantes.dart';
@@ -745,18 +749,70 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
   }
 
   Future obterImagemAssinatura() async {
-    //if (imagem != null) {
-      //return Image.memory(imagem!);
-    //}
-    var imagemAssinatura = await _assinaturaController.toImage();
-    ByteData? byteData = await imagemAssinatura!.toByteData(
-        format: ui.ImageByteFormat.png);
-    Uint8List pngBytes = byteData!.buffer.asUint8List();
+    showImage();
+  }
 
-    return imagemAssinatura;
+  String formattedDate() {
+    DateTime dateTime = DateTime.now();
+    String dateTimeString = 'Signature_' +
+        dateTime.year.toString() +
+        dateTime.month.toString() +
+        dateTime.day.toString() +
+        dateTime.hour.toString() +
+        ':' + dateTime.minute.toString() +
+        ':' + dateTime.second.toString() +
+        ':' + dateTime.millisecond.toString() +
+        ':' + dateTime.microsecond.toString();
+    return dateTimeString;
+  }
+
+  Future<String> createFolder(String cow) async {
+    final folderName = cow;
+    final path = Directory(folderName);
+    var status = await Permission.storage.status;
+    if (!status.isGranted) {
+      await Permission.storage.request();
+    }
+    if ((await path.exists())) {
+      return path.path;
+    } else {
+      path.create();
+      return path.path;
+    }
+  }
+
+  Future showImage() async {
+    var imagemAssinatura = await _assinaturaController.toImage();
+    var pngBytes = await imagemAssinatura!.toByteData(format: ui.ImageByteFormat.png);
+    // Use plugin [path_provider] to export image to storage
+    Directory directory = (await getExternalStorageDirectory()) as Directory;
+    String path = directory.path;
+    const directoryName = 'Signature';
+    String pasta = await createFolder('$path/$directoryName');
+    File('$path/$directoryName/${formattedDate()}.png')
+        .writeAsBytesSync(pngBytes!.buffer.asInt8List());
+    return showDialog<Null>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              'Salvo a assinatura',
+              style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontWeight: FontWeight.w300,
+                  color: Theme.of(context).primaryColor,
+                  letterSpacing: 1.1
+              ),
+            ),
+            content: Image.memory(Uint8List.view(pngBytes.buffer)),
+          );
+        }
+    );
   }
 
 }
+
+
 
 Future<DateTime?> obterData(BuildContext context) async {
   return showDatePicker(

@@ -3,6 +3,7 @@ import 'dart:convert' as convert;
 import 'package:projeto_procon/models/autuacao.dart';
 import 'package:projeto_procon/models/user.dart';
 import 'package:http/http.dart' as http;
+import 'dart:io';
 import 'package:projeto_procon/util/shared_var.dart';
 
 class ConsultaApi {
@@ -117,4 +118,6 @@ class ConsultaApi {
     }
     return 0;
   }
+
+
 }
