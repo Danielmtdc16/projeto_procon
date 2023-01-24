@@ -1,5 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:signature/signature.dart';
+import 'dart:ui' as ui;
 import 'package:projeto_procon/constantes/constantes.dart';
 import 'package:projeto_procon/models/autuacao.dart';
 import 'package:projeto_procon/pages/tela_principal.dart';
@@ -56,6 +60,14 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
   final _telefoneResponsavelController = TextEditingController();
   final _localAutuacaoController = TextEditingController();
   final _irregularidadeController = TextEditingController();
+
+  final SignatureController _assinaturaController = SignatureController(
+    penStrokeWidth: 5,
+    penColor: Color(0xFF282828),
+    exportBackgroundColor: kCinzaMuitoClaro
+  );
+
+  Uint8List? imagem;
 
   final GlobalKey<State> _keyLoader = GlobalKey<State>();
 
@@ -541,6 +553,72 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
                     height: 30,
                     thickness: 2,
                   ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+
+                  const Text(
+                    "Assinatura do Autuado:",
+                    style: kTextosPrincipaisTelaCadastro,
+                  ),
+
+                  Signature(
+                      controller: _assinaturaController,
+                      width: double.infinity,
+                      height: 200,
+                      backgroundColor: kCinzaMuitoClaro,
+                  ),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: obterImagemAssinatura,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: kAzulClaro,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 50, vertical: 5),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                        ),
+                        child: const Text(
+                          "Salvar",
+                          style: kTextosDosInputsTelaCadastro,
+                        ),
+                      ),
+
+                      const SizedBox(width: 10,),
+
+                      ElevatedButton(
+                          onPressed: () {
+                            _assinaturaController.clear();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: kAzulClaro,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 50, vertical: 5),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                          ),
+                          child: const Text(
+                            "Limpar",
+                            style: kTextosDosInputsTelaCadastro,
+                          )
+                      ),
+                    ],
+                  ),
+
+                  const Divider(
+                    color: kCinzaClaro,
+                    height: 30,
+                    thickness: 2,
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: kAzulClaro,
@@ -654,6 +732,19 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
       _cidadeResponsavelController.text = resultCep.localidade;
     });
   }
+
+  Future obterImagemAssinatura() async {
+    //if (imagem != null) {
+      //return Image.memory(imagem!);
+    //}
+    var imagemAssinatura = await _assinaturaController.toImage();
+    ByteData? byteData = await imagemAssinatura!.toByteData(
+        format: ui.ImageByteFormat.png);
+    Uint8List pngBytes = byteData!.buffer.asUint8List();
+
+    return imagemAssinatura;
+  }
+
 }
 
 Future<DateTime?> obterData(BuildContext context) async {
