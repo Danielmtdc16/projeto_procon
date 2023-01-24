@@ -30,6 +30,7 @@ class Autuacao{
   late int inicialpreenchimento_id;
   late int assinado;
   late String email_autuado;
+  late String path_assinatura;
 
 
   Autuacao({
@@ -62,7 +63,7 @@ class Autuacao{
       required this.user_id,
       required this.inicialpreenchimento_id,
       required this.assinado,
-      this.email_autuado= ""});
+      this.email_autuado= "", this.path_assinatura= ""});
 
   Autuacao.fromJson(Map<String, dynamic> json){
     id = json['id'];

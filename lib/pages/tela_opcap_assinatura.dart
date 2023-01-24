@@ -64,15 +64,12 @@ class _TelaOpcaoAssinatura extends State<TelaOpcaoAssinatura> {
           ),
           ContainerPersonalizado(
             cor: kAzulClaro,
-              function: (){
-                _showEnviarEmail(context);
-              },
             filhoContainer: Text(
               "Assinar pelo Celular",
               style: kEstiloTextoContainerPersonalizado.copyWith(
                   fontSize: 15),
             ), aoPressionar: ()  {
-            _showEnviarEmail(context);
+            _showAssinatura(context);
             }
           ),
         ]
@@ -111,8 +108,16 @@ class _TelaOpcaoAssinatura extends State<TelaOpcaoAssinatura> {
       }
     }
   }
-  void _showAssinatura(BuildContext context, Autuacao autuacao) {
-    //push(context, NewAula(disc, aulacopia));
+  void _showAssinatura(BuildContext context) async{
+    //Messages.showLoadingDialog(context, _formKey);
+    var response = await ConsultaApi.uploadImagem(autuacao.path_assinatura, autuacao.id);
+    //Navigator.of(context,rootNavigator: true).pop();//close the dialoge;
+    if(response.statusCode == 200) {
+      Messages().msgInfor("Assinatura Salva com Sucesso!", context);
+    }else{
+      Messages().msgErro("Sem acesso ao servidor!", context);
+    }
+
   }
 
 }
