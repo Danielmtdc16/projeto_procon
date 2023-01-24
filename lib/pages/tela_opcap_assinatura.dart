@@ -50,7 +50,7 @@ class _TelaOpcaoAssinatura extends State<TelaOpcaoAssinatura> {
           ),
             ContainerPersonalizado(
               cor: kAzulClaro,
-              function: (){
+                aoPressionar: (){
                 _showEnviarEmail(context);
               },
               filhoContainer: Text(

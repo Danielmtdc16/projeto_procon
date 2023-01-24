@@ -16,7 +16,7 @@ class ContainerPersonalizado extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: function,
+      onTap: aoPressionar,
       child: Container(
         alignment: Alignment.center,
         height: kalturaContainerPersonalizado,

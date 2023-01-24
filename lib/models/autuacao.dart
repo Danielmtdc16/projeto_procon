@@ -9,6 +9,8 @@ class Autuacao{
   late String telefone1;
   late String cep;
   late String logradouro;
+  late String numero;
+  late String bairro;
   late String cidade;
   late String estado;
   late String responsavel;
@@ -40,6 +42,8 @@ class Autuacao{
       this.telefone1= "",
       this.cep= "",
       this.logradouro= "",
+      this.numero= "",
+      this.bairro= "",
       this.cidade= "",
       this.estado= "",
       this.responsavel = "",
@@ -70,6 +74,8 @@ class Autuacao{
     telefone1 = json['telefone1'];
     cep = json['cep'];
     logradouro = json['logradouro'];
+    numero = json['numero'];
+    bairro = json['bairro'];
     cidade = json['cidade'];
     estado = json['estado'];
     responsavel = json['responsavel'];
@@ -102,6 +108,8 @@ class Autuacao{
         "telefone1": telefone1,
         "cep": cep,
         "logradouro": logradouro,
+        "numero": numero,
+        "bairro": bairro,
         "cidade": cidade,
         "estado": estado,
         "responsavel": responsavel,

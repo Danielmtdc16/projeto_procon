@@ -40,6 +40,9 @@ dependencies:
   http: ^0.13.4
   shared_preferences: ^2.0.13
   internet_connection_checker: ^1.0.0+1
+  signature: ^5.3.0
+  syncfusion_flutter_signaturepad: ^20.4.44
+  image_picker: ^0.8.6+1
 
 dev_dependencies:
   flutter_test:

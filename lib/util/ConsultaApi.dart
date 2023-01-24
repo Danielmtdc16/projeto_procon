@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:projeto_procon/util/shared_var.dart';
 
 class ConsultaApi {
-  static var url_webservice = 'http://apiprocon.inforpiaui.app.br/apinota';
+  static var url_webservice = 'https://apiprocon.inforpiaui.app.br/apinota';
   static var url_login = url_webservice + '/loginapi';
 
   static Future<int> login(String username, String password, context) async {
@@ -63,6 +63,7 @@ class ConsultaApi {
     var params = convert.jsonEncode({
       'notaauto': autuacao.toJson()});
     int idAuto = 0;
+    print(params);
     try {
       Map<String, String> headers = {"Content-Type":  "application/json; charset=UTF-8"  };
       var response = await http.post(
@@ -103,7 +104,8 @@ class ConsultaApi {
     try{
       var url = Uri.parse(ConsultaApi.url_webservice+"/enviaremailautuado/"+autuacao.id.toString());
       var response = await http.get(url);
-      print(url);
+      print(ConsultaApi.url_webservice+"/enviaremailautuado/"+autuacao.id.toString());
+      print(response.body);
       if(response.statusCode == 200){
         var jsonResponse = convert.jsonDecode(response.body);
         print(jsonResponse);
