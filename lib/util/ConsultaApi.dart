@@ -119,5 +119,16 @@ class ConsultaApi {
     return 0;
   }
 
+  static Future<http.StreamedResponse> uploadImagem(String path_imagem, int id) async {
+    http.MultipartRequest request = http.MultipartRequest('PUT', Uri.parse(url_webservice+'/alterarnotaauto/'+id.toString()));
+    if(path_imagem != null) {
+      File _file = File(path_imagem);
+      request.files.add(http.MultipartFile('notaauto[assinatura_imagem]', _file.readAsBytes().asStream(), _file.lengthSync(), filename: _file.path.split('/').last));
+    }
+    http.StreamedResponse response = await request.send();
+    return response;
+  }
+
+
 
 }

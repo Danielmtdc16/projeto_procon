@@ -89,6 +89,8 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
   late String estadoResponsavel;
   late String tipoInscricao;
 
+  late String path_assinatura = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -695,6 +697,7 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
         inicialpreenchimento_id: 1,
         assinado: 0,
         email_autuado: "",
+        path_assinatura: path_assinatura
       );
 
       int resp = await ConsultaApi.salvar_auto(autuacao, context);
@@ -791,8 +794,12 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
     String path = directory.path;
     const directoryName = 'Signature';
     String pasta = await createFolder('$path/$directoryName');
-    File('$path/$directoryName/${formattedDate()}.png')
+    String caminho = '$pasta/${formattedDate()}.png';
+    File(caminho)
         .writeAsBytesSync(pngBytes!.buffer.asInt8List());
+    setState(() {
+      path_assinatura = caminho;
+    });
     return showDialog<Null>(
         context: context,
         builder: (BuildContext context) {
