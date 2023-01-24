@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_procon/pages/tela_assinatura.dart';
 import 'package:projeto_procon/pages/tela_opcap_assinatura.dart';
 import 'package:projeto_procon/pages/tela_principal.dart';
 import 'pages/tela_cadastro_autuacao.dart';
@@ -14,6 +15,6 @@ void main() {
       const Locale('en'),
       const Locale('pt')
     ],
-    home: TelaLogin(),
+    home: TelaPrincipal(),
   ));
 }

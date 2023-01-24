@@ -566,68 +566,6 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
                     height: 5,
                   ),
 
-                  const Text(
-                    "Assinatura do Autuado:",
-                    style: kTextosPrincipaisTelaCadastro,
-                  ),
-
-                  Signature(
-                      controller: _assinaturaController,
-                      width: double.infinity,
-                      height: 200,
-                      backgroundColor: kCinzaMuitoClaro,
-                  ),
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                        onPressed: obterImagemAssinatura,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: kAzulClaro,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 50, vertical: 5),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                          ),
-                        ),
-                        child: const Text(
-                          "Salvar",
-                          style: kTextosDosInputsTelaCadastro,
-                        ),
-                      ),
-
-                      const SizedBox(width: 10,),
-
-                      ElevatedButton(
-                          onPressed: () {
-                            _assinaturaController.clear();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: kAzulClaro,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 50, vertical: 5),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                          ),
-                          child: const Text(
-                            "Limpar",
-                            style: kTextosDosInputsTelaCadastro,
-                          )
-                      ),
-                    ],
-                  ),
-
-                  const Divider(
-                    color: kCinzaClaro,
-                    height: 30,
-                    thickness: 2,
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: kAzulClaro,
@@ -753,71 +691,7 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
     });
   }
 
-  Future obterImagemAssinatura() async {
-    showImage();
-  }
 
-  String formattedDate() {
-    DateTime dateTime = DateTime.now();
-    String dateTimeString = 'Signature_' +
-        dateTime.year.toString() +
-        dateTime.month.toString() +
-        dateTime.day.toString() +
-        dateTime.hour.toString() +
-        ':' + dateTime.minute.toString() +
-        ':' + dateTime.second.toString() +
-        ':' + dateTime.millisecond.toString() +
-        ':' + dateTime.microsecond.toString();
-    return dateTimeString;
-  }
-
-  Future<String> createFolder(String cow) async {
-    final folderName = cow;
-    final path = Directory(folderName);
-    var status = await Permission.storage.status;
-    if (!status.isGranted) {
-      await Permission.storage.request();
-    }
-    if ((await path.exists())) {
-      return path.path;
-    } else {
-      path.create();
-      return path.path;
-    }
-  }
-
-  Future showImage() async {
-    var imagemAssinatura = await _assinaturaController.toImage();
-    var pngBytes = await imagemAssinatura!.toByteData(format: ui.ImageByteFormat.png);
-    // Use plugin [path_provider] to export image to storage
-    Directory directory = (await getExternalStorageDirectory()) as Directory;
-    String path = directory.path;
-    const directoryName = 'Signature';
-    String pasta = await createFolder('$path/$directoryName');
-    String caminho = '$pasta/${formattedDate()}.png';
-    File(caminho)
-        .writeAsBytesSync(pngBytes!.buffer.asInt8List());
-    setState(() {
-      path_assinatura = caminho;
-    });
-    return showDialog<Null>(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              'Salvo a assinatura',
-              style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontWeight: FontWeight.w300,
-                  color: Theme.of(context).primaryColor,
-                  letterSpacing: 1.1
-              ),
-            ),
-            content: Image.memory(Uint8List.view(pngBytes.buffer)),
-          );
-        }
-    );
-  }
 
 }
 
