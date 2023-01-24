@@ -709,15 +709,17 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
     }
   }
 
+  // ignore: non_constant_identifier_names
   bool verificar_campos() {
     return true;
   }
 
+  // ignore: non_constant_identifier_names
   bool verificar_campo(
       TextEditingController textController, FocusNode focusNode, String campo) {
     if (textController.text.toString().trim() == "") {
       focusNode.requestFocus();
-      Messages().msgInfor("Preencha " + campo + "!", context);
+      Messages().msgInfor("Preencha $campo!", context);
       return false;
     }
     return true;
