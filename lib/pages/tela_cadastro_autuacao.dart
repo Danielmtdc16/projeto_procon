@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:projeto_procon/constantes/constantes.dart';
 import 'package:projeto_procon/models/autuacao.dart';
+import 'package:projeto_procon/models/user.dart';
+import 'package:projeto_procon/pages/tela_opcap_assinatura.dart';
 import 'package:projeto_procon/pages/tela_principal.dart';
 import 'package:projeto_procon/util/ConsultaApi.dart';
 import 'package:projeto_procon/util/messages.dart';
 import 'package:projeto_procon/util/nav.dart';
+import 'package:projeto_procon/util/shared_var.dart';
 import 'package:projeto_procon/widgets/menu_user.dart';
 import '../widgets/text_field.dart';
 import '../widgets/container_personalizado.dart';
@@ -189,7 +192,7 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
                           style: kEstiloTextoContainerPersonalizado.copyWith(
                               fontSize: 15),
                         ),
-                        aoPressionar: _searchCep,
+                        function: _searchCep,
                       )),
                     ],
                   ),
@@ -590,6 +593,7 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
   void _onClickSalvar(context) async {
     if(verificar_campos()){
       Messages.showLoadingDialog(context, _keyLoader);
+      User user = await SharedVar.getUser();
       Autuacao autuacao = Autuacao(id: 0,
           razaosocial: _razaoSocialController.text,
           nome_fantasia: _nomeFantasiaController.text,
@@ -614,15 +618,16 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
           data_autuacao:  DateTime.now(),
           hora:  DateTime.now(),
           comunicacao_legal: _irregularidadeController.text,
-          user_id: 1,
+          user_id: user.id,
           inicialpreenchimento_id: 1,
           assinado: 0,
-          email_autuado: "a",
+          email_autuado: "",
           );
       int resp = await ConsultaApi.salvar_auto(autuacao, context);
       Navigator.of(context,rootNavigator: true).pop();//close the dialoge;
       if (resp != 0) {
-        pushAndRemoveUntil(context, TelaPrincipal());
+        autuacao.id = resp;
+        pushAndRemoveUntil(context, TelaOpcaoAssinatura(autuacao: autuacao));
       }else{
         Messages().msgErro("Sem acesso ao servidor!"+resp.toString(), context);
       }

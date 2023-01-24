@@ -78,4 +78,41 @@ class ConsultaApi {
     }
     return idAuto;
   }
+
+  static Future<int> update_auto(Autuacao autuacao, context) async {
+    var params = convert.jsonEncode({
+      'notaauto': autuacao.toJson()});
+    int idAuto = 0;
+    try {
+      Map<String, String> headers = {"Content-Type":  "application/json; charset=UTF-8"  };
+      var response = await http.put(
+          Uri.parse(url_webservice+"/alterarnotaauto/"+autuacao.id.toString()),headers: headers, body: params);
+      if (response.statusCode == 200) {
+        var jsonResponse = convert.jsonDecode(response.body);
+        idAuto = Autuacao
+            .fromJson(jsonResponse)
+            .id;
+      }
+    }catch(e){
+      return 0;
+    }
+    return idAuto;
+  }
+
+  static Future<int> enviar_email(Autuacao autuacao, context) async {
+    try{
+      var url = Uri.parse(ConsultaApi.url_webservice+"/enviaremailautuado/"+autuacao.id.toString());
+      var response = await http.get(url);
+      print(url);
+      if(response.statusCode == 200){
+        var jsonResponse = convert.jsonDecode(response.body);
+        print(jsonResponse);
+        if (jsonResponse['id'] != null) {
+          return 1;
+        }
+      }
+    }catch(e){
+    }
+    return 0;
+  }
 }
