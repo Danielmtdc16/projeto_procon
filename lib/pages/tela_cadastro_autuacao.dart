@@ -624,7 +624,7 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
         inicialpreenchimento_id: 1,
         assinado: 0,
         email_autuado: "",
-        path_assinatura: widget.path_assinatura
+        path_assinatura: ""
       );
 
       int resp = await ConsultaApi.salvar_auto(autuacao, context);

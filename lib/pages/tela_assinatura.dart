@@ -5,6 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:projeto_procon/pages/tela_cadastro_autuacao.dart';
+import 'package:projeto_procon/pages/tela_principal.dart';
+import 'package:projeto_procon/util/ConsultaApi.dart';
+import 'package:projeto_procon/util/messages.dart';
+import 'package:projeto_procon/util/nav.dart';
 import 'dart:ui' as ui;
 import 'package:signature/signature.dart';
 import 'package:projeto_procon/constantes/constantes.dart';
@@ -12,13 +16,15 @@ import 'package:projeto_procon/models/autuacao.dart';
 
 class TelaAssinatura extends StatefulWidget {
 
-  const TelaAssinatura({Key? key}) : super(key: key);
-
+  const TelaAssinatura({required this.autuacao});
+  final Autuacao autuacao;
   @override
-  State<TelaAssinatura> createState() => _TelaAssinaturaState();
+  State<TelaAssinatura> createState() => _TelaAssinaturaState(autuacao: autuacao);
 }
 
 class _TelaAssinaturaState extends State<TelaAssinatura> {
+  final Autuacao autuacao;
+  _TelaAssinaturaState({required this.autuacao});
   @override
   void initState() {
     super.initState();
@@ -121,10 +127,19 @@ class _TelaAssinaturaState extends State<TelaAssinatura> {
     String caminho = '$pasta/${formattedDate()}.png';
     File(caminho)
         .writeAsBytesSync(pngBytes!.buffer.asInt8List());
+    //Messages.showLoadingDialog(context, _formKey);
     setState(() {
-      path_assinatura = caminho;
-      Navigator.push(context, MaterialPageRoute(builder: (context) => TelaCadastroAuto(path_assinatura: path_assinatura)));
+      autuacao.path_assinatura = caminho;
     });
+    var response = await ConsultaApi.uploadImagem(autuacao.path_assinatura, autuacao.id);
+    //Navigator.of(context,rootNavigator: true).pop();//close the dialoge;
+
+    if(response.statusCode == 200) {
+      Messages().msgInfor("Assinatura Salva com Sucesso!", context);
+      pushAndRemoveUntil(context, TelaPrincipal());
+    }else{
+      Messages().msgErro("Sem acesso ao servidor!", context);
+    }
     return showDialog<Null>(
         context: context,
         builder: (BuildContext context) {
@@ -142,5 +157,6 @@ class _TelaAssinaturaState extends State<TelaAssinatura> {
           );
         }
     );
+
   }
 }

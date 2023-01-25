@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:projeto_procon/constantes/constantes.dart';
 import 'package:projeto_procon/models/autuacao.dart';
+import 'package:projeto_procon/pages/tela_assinatura.dart';
 import 'package:projeto_procon/util/ConsultaApi.dart';
 import 'package:projeto_procon/util/messages.dart';
+import 'package:projeto_procon/util/nav.dart';
 import 'package:projeto_procon/widgets/container_personalizado.dart';
 import 'package:projeto_procon/widgets/menu_user.dart';
 import 'package:projeto_procon/widgets/text_field.dart';
@@ -109,14 +111,8 @@ class _TelaOpcaoAssinatura extends State<TelaOpcaoAssinatura> {
     }
   }
   void _showAssinatura(BuildContext context) async{
-    //Messages.showLoadingDialog(context, _formKey);
-    var response = await ConsultaApi.uploadImagem(autuacao.path_assinatura, autuacao.id);
-    //Navigator.of(context,rootNavigator: true).pop();//close the dialoge;
-    if(response.statusCode == 200) {
-      Messages().msgInfor("Assinatura Salva com Sucesso!", context);
-    }else{
-      Messages().msgErro("Sem acesso ao servidor!", context);
-    }
+    pushAndRemoveUntil(context, TelaAssinatura(autuacao: autuacao));
+
 
   }
 

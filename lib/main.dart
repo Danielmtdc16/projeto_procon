@@ -15,6 +15,6 @@ void main() {
       const Locale('en'),
       const Locale('pt')
     ],
-    home: TelaAssinatura(),
+    home: TelaLogin(),
   ));
 }
