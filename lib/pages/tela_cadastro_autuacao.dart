@@ -1,18 +1,13 @@
-
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:signature/signature.dart';
-import 'dart:ui' as ui;
+
 import 'package:projeto_procon/constantes/constantes.dart';
 import 'package:projeto_procon/models/autuacao.dart';
 import 'package:projeto_procon/models/user.dart';
 import 'package:projeto_procon/pages/tela_opcap_assinatura.dart';
-import 'package:projeto_procon/pages/tela_principal.dart';
+
 import 'package:projeto_procon/util/ConsultaApi.dart';
 import 'package:projeto_procon/util/messages.dart';
 import 'package:projeto_procon/util/nav.dart';
@@ -23,7 +18,9 @@ import '../widgets/container_personalizado.dart';
 import '../util/consultaCEP.dart';
 
 class TelaCadastroAuto extends StatefulWidget {
-  const TelaCadastroAuto({Key? key}) : super(key: key);
+
+  String path_assinatura;
+  TelaCadastroAuto({Key? key, this.path_assinatura = ''}) : super(key: key);
 
   @override
   State<TelaCadastroAuto> createState() => _TelaCadastroAutoState();
@@ -69,12 +66,6 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
   final _localAutuacaoController = TextEditingController();
   final _irregularidadeController = TextEditingController();
 
-  final SignatureController _assinaturaController = SignatureController(
-    penStrokeWidth: 5,
-    penColor: Color(0xFF282828),
-    exportBackgroundColor: kCinzaMuitoClaro
-  );
-
   Uint8List? imagem;
 
   final GlobalKey<State> _keyLoader = GlobalKey<State>();
@@ -88,8 +79,6 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
   late String estadoEmpresa;
   late String estadoResponsavel;
   late String tipoInscricao;
-
-  late String path_assinatura = "";
 
   @override
   Widget build(BuildContext context) {
@@ -635,7 +624,7 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
         inicialpreenchimento_id: 1,
         assinado: 0,
         email_autuado: "",
-        path_assinatura: path_assinatura
+        path_assinatura: widget.path_assinatura
       );
 
       int resp = await ConsultaApi.salvar_auto(autuacao, context);

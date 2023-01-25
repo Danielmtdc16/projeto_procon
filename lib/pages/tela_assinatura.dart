@@ -4,11 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:projeto_procon/pages/tela_cadastro_autuacao.dart';
 import 'dart:ui' as ui;
 import 'package:signature/signature.dart';
 import 'package:projeto_procon/constantes/constantes.dart';
+import 'package:projeto_procon/models/autuacao.dart';
 
 class TelaAssinatura extends StatefulWidget {
+
   const TelaAssinatura({Key? key}) : super(key: key);
 
   @override
@@ -28,6 +31,7 @@ class _TelaAssinaturaState extends State<TelaAssinatura> {
       exportBackgroundColor: kCinzaMuitoClaro);
 
   late String path_assinatura = "";
+
 
   @override
   Widget build(BuildContext context) {
@@ -119,6 +123,7 @@ class _TelaAssinaturaState extends State<TelaAssinatura> {
         .writeAsBytesSync(pngBytes!.buffer.asInt8List());
     setState(() {
       path_assinatura = caminho;
+      Navigator.push(context, MaterialPageRoute(builder: (context) => TelaCadastroAuto(path_assinatura: path_assinatura)));
     });
     return showDialog<Null>(
         context: context,
