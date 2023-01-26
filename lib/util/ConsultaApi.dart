@@ -36,17 +36,25 @@ class ConsultaApi {
       var response = await http.get(url);
       if(response.statusCode == 200){
         var autuacaoesJson = convert.jsonDecode(response.body);
-        await SharedVar.setAutos(response.body);
         await SharedVar.setOffline("0");
         for(var autuacaoJson in autuacaoesJson){
           _autuacoes.add(Autuacao.fromJson(autuacaoJson));
+          _autuacoes.last.salvo_servidor = 1;
         }
+        await SharedVar.setAutos(convert.jsonEncode(_autuacoes));
       }else{
         await SharedVar.setOffline("1");
       }
     }catch(e){
       await SharedVar.setOffline("1");
     }
+    var autuacaoesJson = convert.jsonDecode(await SharedVar.getAutoCelulars());
+    for(var autuacaoJson in autuacaoesJson){
+      Autuacao autuacao = Autuacao.fromJson(autuacaoJson);
+      autuacao.salvo_servidor = 0;
+      _autuacoes.add(autuacao);
+    }
+
     return _autuacoes;
   }
 
@@ -54,6 +62,21 @@ class ConsultaApi {
     var _autuacoes = <Autuacao>[];
     var autuacaoesJson = convert.jsonDecode(await SharedVar.getAutos());
     await SharedVar.setOffline("1");
+    for(var autuacaoJson in autuacaoesJson){
+      _autuacoes.add(Autuacao.fromJson(autuacaoJson));
+    }
+    var autuacaoesCelular = convert.jsonDecode(await SharedVar.getAutoCelulars());
+    for(var autuacaoJson in autuacaoesCelular){
+      Autuacao autuacao = Autuacao.fromJson(autuacaoJson);
+      autuacao.salvo_servidor = 0;
+      _autuacoes.add(autuacao);
+    }
+
+    return _autuacoes;
+  }
+  Future<List<Autuacao>> getAutuacoesOfflineCelular() async{
+    var _autuacoes = <Autuacao>[];
+    var autuacaoesJson = convert.jsonDecode(await SharedVar.getAutoCelulars());
     for(var autuacaoJson in autuacaoesJson){
       _autuacoes.add(Autuacao.fromJson(autuacaoJson));
     }

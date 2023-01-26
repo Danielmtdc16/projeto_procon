@@ -12,7 +12,7 @@ class CardDeAutuacao extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: colorCard,
+      color: (autuacao.salvo_servidor == 1 ? kCinzaMuitoClaro : kAmareloClaro),
       child: InkWell(
         onTap: () {
           //_showAutuacao(context, _aulas[index]);

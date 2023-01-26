@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:projeto_procon/pages/tela_cadastro_autuacao.dart';
@@ -118,7 +119,8 @@ class _TelaAssinaturaState extends State<TelaAssinatura> {
 
   Future showImage() async {
     var imagemAssinatura = await _assinaturaController.toImage();
-    var pngBytes = await imagemAssinatura!.toByteData(format: ui.ImageByteFormat.png);
+    var pngBytes = await imagemAssinatura!.toByteData(
+        format: ui.ImageByteFormat.png);
     // Use plugin [path_provider] to export image to storage
     Directory directory = (await getExternalStorageDirectory()) as Directory;
     String path = directory.path;
@@ -131,14 +133,22 @@ class _TelaAssinaturaState extends State<TelaAssinatura> {
     setState(() {
       autuacao.path_assinatura = caminho;
     });
-    var response = await ConsultaApi.uploadImagem(autuacao.path_assinatura, autuacao.id);
-    //Navigator.of(context,rootNavigator: true).pop();//close the dialoge;
+    bool result = await InternetConnectionChecker().hasConnection;
 
-    if(response.statusCode == 200) {
+    if (result) {
+      var response = await ConsultaApi.uploadImagem(
+          autuacao.path_assinatura, autuacao.id);
+      //Navigator.of(context,rootNavigator: true).pop();//close the dialoge;
+
+      if (response.statusCode == 200) {
+        Messages().msgInfor("Assinatura Salva com Sucesso!", context);
+        pushAndRemoveUntil(context, TelaPrincipal());
+      } else {
+        Messages().msgErro("Sem acesso ao servidor!", context);
+      }
+    } else{
       Messages().msgInfor("Assinatura Salva com Sucesso!", context);
       pushAndRemoveUntil(context, TelaPrincipal());
-    }else{
-      Messages().msgErro("Sem acesso ao servidor!", context);
     }
     return showDialog<Null>(
         context: context,

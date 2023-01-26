@@ -31,6 +31,7 @@ class Autuacao{
   late int assinado;
   late String email_autuado;
   late String path_assinatura;
+  late int salvo_servidor;
 
 
   Autuacao({
@@ -63,7 +64,9 @@ class Autuacao{
       required this.user_id,
       required this.inicialpreenchimento_id,
       required this.assinado,
-      this.email_autuado= "", this.path_assinatura= ""});
+      this.email_autuado= "",
+      this.path_assinatura= "",
+      this.salvo_servidor = 0});
 
   Autuacao.fromJson(Map<String, dynamic> json){
     id = json['id'];
@@ -96,6 +99,7 @@ class Autuacao{
     inicialpreenchimento_id = json['inicialpreenchimento_id'];
     assinado = json['assinado'] != null ? json['assinado'] : 0;
     email_autuado = json['email_autuado'];
+    salvo_servidor = (json['salvo_servidor'] == null ? 1 : json['salvo_servidor']);
   }
 
   Map toJson() =>

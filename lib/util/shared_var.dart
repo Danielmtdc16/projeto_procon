@@ -1,4 +1,7 @@
+import 'package:projeto_procon/models/autuacao.dart';
 import 'package:projeto_procon/models/user.dart';
+import 'package:projeto_procon/util/ConsultaApi.dart';
+import 'dart:convert' as convert;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedVar {
@@ -57,6 +60,20 @@ class SharedVar {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('autos') ?? "";
   }
+  static Future<void> setAutoCelulars(String json) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("autocelular", json);
+  }
+
+  static Future<void> clearAutoCelulars() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('autocelular');
+  }
+
+  static Future<String> getAutoCelulars() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('autocelular') ?? "[]";
+  }
 
   static Future<void> setOffline(String offline) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -66,6 +83,17 @@ class SharedVar {
   static Future<String> getOffline() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('offline') ?? "";
+  }
+
+  static Future<void> setAddAutuado(Autuacao autuacao) async {
+    String json = await SharedVar.getAutoCelulars();
+    List<Autuacao> list = <Autuacao>[];
+    if(json != "[]") {
+      List<Autuacao> list = convert.jsonDecode(json);
+    }
+    list.add(autuacao);
+    var autuacaoesJson = convert.jsonEncode(list);
+    await SharedVar.setAutoCelulars(autuacaoesJson);
   }
 
 

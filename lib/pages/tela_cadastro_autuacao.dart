@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:intl/intl.dart';
 
 import 'package:projeto_procon/constantes/constantes.dart';
@@ -587,54 +588,59 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
   }
 
   void _onClickSalvar(context) async {
-
     if (verificar_campos()) {
-      Messages.showLoadingDialog(context, _keyLoader);
-
       User user = await SharedVar.getUser();
-
       Autuacao autuacao = Autuacao(
-        id: 0,
-        razaosocial: _razaoSocialController.text,
-        nome_fantasia: _nomeFantasiaController.text,
-        atividade: _atividadeController.text,
-        cnpj_cpf: _cnpjCpfController.text,
-        tipo_inscricao: tipoInscricao,
-        telefone1: _telefoneResponsavelController.text,
-        cep: _cepEmpresaController.text,
-        numero: _numeroEmpresaController.text,
-        logradouro: _logradouroEmpresaController.text,
-        bairro: _bairroEmpresaController.text,
-        cidade: _cidadeEmpresaController.text,
-        estado: estadoEmpresa,
-        responsavel: _nomeResponsavelController.text,
-        cpf_rg: _cpfRgResponsavelController.text,
-        cep_responsavel: _cepResponsavelController.text,
-        logradouro_responsavel: _logradouroResponsavelController.text,
-        numero_responsavel: _numeroResponsavelController.text,
-        bairro_responsavel: _bairroResponsavelController.text,
-        cidade_responsavel: _cidadeResponsavelController.text,
-        estado_responsavel: estadoResponsavel,
-        telefone_responsavel: _telefoneResponsavelController.text,
-        local_autuacao: _localAutuacaoController.text,
-        data_autuacao: DateTime.now(),
-        hora: DateTime.now(),
-        comunicacao_legal: _irregularidadeController.text,
-        user_id: user.id,
-        inicialpreenchimento_id: 1,
-        assinado: 0,
-        email_autuado: "",
-        path_assinatura: ""
+          id: 0,
+          razaosocial: _razaoSocialController.text,
+          nome_fantasia: _nomeFantasiaController.text,
+          atividade: _atividadeController.text,
+          cnpj_cpf: _cnpjCpfController.text,
+          tipo_inscricao: tipoInscricao,
+          telefone1: _telefoneResponsavelController.text,
+          cep: _cepEmpresaController.text,
+          numero: _numeroEmpresaController.text,
+          logradouro: _logradouroEmpresaController.text,
+          bairro: _bairroEmpresaController.text,
+          cidade: _cidadeEmpresaController.text,
+          estado: estadoEmpresa,
+          responsavel: _nomeResponsavelController.text,
+          cpf_rg: _cpfRgResponsavelController.text,
+          cep_responsavel: _cepResponsavelController.text,
+          logradouro_responsavel: _logradouroResponsavelController.text,
+          numero_responsavel: _numeroResponsavelController.text,
+          bairro_responsavel: _bairroResponsavelController.text,
+          cidade_responsavel: _cidadeResponsavelController.text,
+          estado_responsavel: estadoResponsavel,
+          telefone_responsavel: _telefoneResponsavelController.text,
+          local_autuacao: _localAutuacaoController.text,
+          data_autuacao: DateTime.now(),
+          hora: DateTime.now(),
+          comunicacao_legal: _irregularidadeController.text,
+          user_id: user.id,
+          inicialpreenchimento_id: 1,
+          assinado: 0,
+          email_autuado: "",
+          path_assinatura: ""
       );
+      bool result = await InternetConnectionChecker().hasConnection;
 
-      int resp = await ConsultaApi.salvar_auto(autuacao, context);
-      Navigator.of(context, rootNavigator: true).pop(); //close the dialoge;
-      if (resp != 0) {
-        autuacao.id = resp;
+      if(result==false) {
+        autuacao.salvo_servidor=0;
+        await SharedVar.setAddAutuado(autuacao);
+        Messages().msgInfor("Sem acesso a internet, Salvo Local!", context);
         pushAndRemoveUntil(context, TelaOpcaoAssinatura(autuacao: autuacao));
       }else{
-        Messages().msgErro("Sem acesso ao servidor!", context);
-        //pushAndRemoveUntil(context, TelaOpcaoAssinatura(autuacao: autuacao));
+            Messages.showLoadingDialog(context, _keyLoader);
+            int resp = await ConsultaApi.salvar_auto(autuacao, context);
+            Navigator.of(context, rootNavigator: true).pop(); //close the dialoge;
+            if (resp != 0) {
+              autuacao.id = resp;
+              pushAndRemoveUntil(context, TelaOpcaoAssinatura(autuacao: autuacao));
+            }else{
+              Messages().msgErro("Sem acesso ao servidor!", context);
+              //pushAndRemoveUntil(context, TelaOpcaoAssinatura(autuacao: autuacao));
+            }
       }
     }
   }
