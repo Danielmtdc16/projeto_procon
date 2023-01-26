@@ -627,7 +627,6 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
 
       if(result==false) {
         autuacao.salvo_servidor=0;
-        await SharedVar.setAddAutuado(autuacao);
         Messages().msgInfor("Sem acesso a internet, Salvo Local!", context);
         pushAndRemoveUntil(context, TelaOpcaoAssinatura(autuacao: autuacao));
       }else{

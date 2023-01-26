@@ -119,6 +119,10 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
             Navigator.of(context, rootNavigator: true)
                 .pop(); //close the dialoge;
             Messages().msgErro("Sem acesso ao servidor!", context);
+          }else{
+              autuacao.id = resp;
+              await ConsultaApi.uploadImagem(
+                autuacao.path_assinatura, autuacao.id);
           }
         }
       }

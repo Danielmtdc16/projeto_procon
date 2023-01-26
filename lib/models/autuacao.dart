@@ -100,6 +100,7 @@ class Autuacao{
     assinado = json['assinado'] != null ? json['assinado'] : 0;
     email_autuado = json['email_autuado'];
     salvo_servidor = (json['salvo_servidor'] == null ? 1 : json['salvo_servidor']);
+    path_assinatura = (json['path_assinatura'] != null ? json['path_assinatura'] : "");
   }
 
   Map toJson() =>
@@ -133,7 +134,8 @@ class Autuacao{
         "user_id": user_id,
         "inicialpreenchimento_id": inicialpreenchimento_id,
         "assinado": assinado,
-        "email_autuado": email_autuado
+        "email_autuado": email_autuado,
+        "path_assinatura": path_assinatura
       };
 
 

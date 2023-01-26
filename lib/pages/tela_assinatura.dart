@@ -10,6 +10,7 @@ import 'package:projeto_procon/pages/tela_principal.dart';
 import 'package:projeto_procon/util/ConsultaApi.dart';
 import 'package:projeto_procon/util/messages.dart';
 import 'package:projeto_procon/util/nav.dart';
+import 'package:projeto_procon/util/shared_var.dart';
 import 'dart:ui' as ui;
 import 'package:signature/signature.dart';
 import 'package:projeto_procon/constantes/constantes.dart';
@@ -147,6 +148,7 @@ class _TelaAssinaturaState extends State<TelaAssinatura> {
         Messages().msgErro("Sem acesso ao servidor!", context);
       }
     } else{
+      await SharedVar.setAddAutuado(autuacao);
       Messages().msgInfor("Assinatura Salva com Sucesso!", context);
       pushAndRemoveUntil(context, TelaPrincipal());
     }
