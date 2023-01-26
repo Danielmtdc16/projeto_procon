@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_procon/pages/tela_login.dart';
-import 'package:projeto_procon/util/ConsultaApi.dart';
+import 'package:projeto_procon/constantes/constantes.dart';
 import 'package:projeto_procon/util/nav.dart';
 import 'package:projeto_procon/util/shared_var.dart';
+
+
 class MenuUser extends StatelessWidget {
+
   String _nome = "";
   Future init() async {
     _nome = await SharedVar.getNome();
@@ -21,9 +24,9 @@ class MenuUser extends StatelessWidget {
               value: 0,
               child: Text(_nome),
             ),
-            PopupMenuItem<int>(
+            const PopupMenuItem<int>(
               value: 1,
-              child: Text("Sair"),
+              child: Text("Sair", style: kTextosDosInputsTelaCadastro,),
             ),
           ];
         },
@@ -38,8 +41,9 @@ class MenuUser extends StatelessWidget {
 
   }
 
+  // ignore: non_constant_identifier_names
   Future<void> _Logout(BuildContext context) async {
-    pushAndRemoveUntil(context, TelaLogin());
+    pushAndRemoveUntil(context, const TelaLogin());
   }
 
 }

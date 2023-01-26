@@ -10,31 +10,33 @@ import 'package:projeto_procon/util/shared_var.dart';
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
   @override
+  // ignore: library_private_types_in_public_api
   _SplashPage createState() => _SplashPage();
 
 }
 
 class _SplashPage extends State<SplashPage> with SingleTickerProviderStateMixin {
   void handleTimeoutLogin() {
-    pushAndRemoveUntil(context, TelaLogin());
+    pushAndRemoveUntil(context, const TelaLogin());
   }
 
   void handleTimeoutTelaPrincipal() {
-    pushAndRemoveUntil(context, TelaPrincipal());
+    pushAndRemoveUntil(context, const TelaPrincipal());
   }
 
   startTimeoutTelaPrincipal() async {
     var duration = const Duration(seconds: 2);
-    return new Timer(duration, handleTimeoutTelaPrincipal);
+    return Timer(duration, handleTimeoutTelaPrincipal);
   }
 
   startTimeoutLogin() async {
     var duration = const Duration(seconds: 1);
-    return new Timer(duration, handleTimeoutLogin);
+    return Timer(duration, handleTimeoutLogin);
   }
 
   verificarTipoTela() async {
     User user = await SharedVar.getUser();
+    // ignore: unrelated_type_equality_checks
     if (user.id == "") {
       startTimeoutLogin();
     } else {
@@ -57,8 +59,8 @@ class _SplashPage extends State<SplashPage> with SingleTickerProviderStateMixin 
   }
 
   _body(BuildContext context) {
-    return new Center(
-      child: new Image(image: AssetImage('assets/imagens/logo-mppi-procon-2.png'),),
+    return const Center(
+      child: Image(image: AssetImage('assets/imagens/logo-mppi-procon-2.png'),),
     );
   }
 }

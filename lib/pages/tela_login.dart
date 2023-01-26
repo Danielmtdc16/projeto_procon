@@ -59,7 +59,7 @@ class _TelaLoginState extends State<TelaLogin> {
                 height: 46,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: kVermelha,
+                    backgroundColor: kVermelha,
                     padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 5),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0),
@@ -88,7 +88,7 @@ class _TelaLoginState extends State<TelaLogin> {
     int resp = await ConsultaApi.login(textUsername.text, textPassword.text, context);
     Navigator.of(context,rootNavigator: true).pop();//close the dialoge;
     if (resp == 1) {
-      pushAndRemoveUntil(context, TelaPrincipal());
+      pushAndRemoveUntil(context, const TelaPrincipal());
     }else if( resp == 3){
       Messages().msgErro("Sem acesso ao servidor!", context);
     } else {

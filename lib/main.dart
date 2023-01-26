@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_procon/pages/splash_page.dart';
+import 'package:projeto_procon/pages/tela_principal.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -9,9 +9,9 @@ void main() {
       GlobalMaterialLocalizations.delegate
     ],
     supportedLocales: [
-      const Locale('en'),
-      const Locale('pt')
+      Locale('en'),
+      Locale('pt')
     ],
-    home: SplashPage(),
+    home: TelaPrincipal(),
   ));
 }

@@ -18,9 +18,12 @@ import '../widgets/text_field.dart';
 import '../widgets/container_personalizado.dart';
 import '../util/consultaCEP.dart';
 
+// ignore: must_be_immutable
 class TelaCadastroAuto extends StatefulWidget {
-
+  // ignore: non_constant_identifier_names
   String path_assinatura;
+
+  // ignore: non_constant_identifier_names
   TelaCadastroAuto({Key? key, this.path_assinatura = ''}) : super(key: key);
 
   @override
@@ -36,8 +39,8 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
 
   void _showTimePicker() {
     showTimePicker(
-        context: context,
-        initialTime: TimeOfDay.now(),
+      context: context,
+      initialTime: TimeOfDay.now(),
     ).then((value) {
       setState(() {
         timeLocalAutuacao = value!.format(context).toString();
@@ -85,7 +88,10 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text("Cadastro Novo Auto"),
+          title: Text(
+            "Cadastro Novo Auto",
+            style: kTextosDosInputsTelaCadastro.copyWith(fontSize: 18),
+          ),
           centerTitle: true,
           backgroundColor: Colors.black,
           actions: <Widget>[MenuUser()]),
@@ -93,6 +99,8 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            clipBehavior: Clip.none,
             child: Form(
               key: _formKey,
               child: Column(
@@ -168,7 +176,7 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
                             );
                           }).toList(),
                           validator: (value) =>
-                          value == null ? "Campo Obrigatório" : null,
+                              value == null ? "Campo Obrigatório" : null,
                         ),
                       );
                     },
@@ -196,17 +204,19 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
                         width: 5,
                       ),
                       Expanded(
-                          child: SizedBox(
-                            height: 58,
-                            child: ContainerPersonalizado(
-                        cor: kAzulClaro,
-                        filhoContainer: Text(
-                            "Consultar CEP",
-                            style: kEstiloTextoContainerPersonalizado.copyWith(
-                                fontSize: 15),
-                        ), aoPressionar: _searchCepEmpresa,
-                      )),)
-
+                        child: SizedBox(
+                          height: 58,
+                          child: ContainerPersonalizado(
+                            cor: kAzulClaro,
+                            filhoContainer: Text(
+                              "Consultar CEP",
+                              style: kEstiloTextoContainerPersonalizado
+                                  .copyWith(fontSize: 15),
+                            ),
+                            aoPressionar: _searchCepEmpresa,
+                          ),
+                        ),
+                      )
                     ],
                   ),
                   const SizedBox(
@@ -345,17 +355,17 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
                       ),
                       Expanded(
                           child: SizedBox(
-                            height: 58,
-                            child: ContainerPersonalizado(
-                              cor: kAzulClaro,
-                              filhoContainer: Text(
-                                "Consultar CEP",
-                                style: kEstiloTextoContainerPersonalizado.copyWith(
-                                    fontSize: 15),
-                              ),
-                              aoPressionar: _searchCepResponsavel,
-                            ),
-                          )),
+                        height: 58,
+                        child: ContainerPersonalizado(
+                          cor: kAzulClaro,
+                          filhoContainer: Text(
+                            "Consultar CEP",
+                            style: kEstiloTextoContainerPersonalizado.copyWith(
+                                fontSize: 15),
+                          ),
+                          aoPressionar: _searchCepResponsavel,
+                        ),
+                      )),
                     ],
                   ),
                   const SizedBox(
@@ -555,7 +565,6 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
                   const SizedBox(
                     height: 5,
                   ),
-
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: kAzulClaro,
@@ -621,25 +630,24 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
           inicialpreenchimento_id: 1,
           assinado: 0,
           email_autuado: "",
-          path_assinatura: ""
-      );
+          path_assinatura: "");
       bool result = await InternetConnectionChecker().hasConnection;
 
-      if(result==false) {
-        autuacao.salvo_servidor=0;
+      if (result == false) {
+        autuacao.salvo_servidor = 0;
         Messages().msgInfor("Sem acesso a internet, Salvo Local!", context);
         pushAndRemoveUntil(context, TelaOpcaoAssinatura(autuacao: autuacao));
-      }else{
-            Messages.showLoadingDialog(context, _keyLoader);
-            int resp = await ConsultaApi.salvar_auto(autuacao, context);
-            Navigator.of(context, rootNavigator: true).pop(); //close the dialoge;
-            if (resp != 0) {
-              autuacao.id = resp;
-              pushAndRemoveUntil(context, TelaOpcaoAssinatura(autuacao: autuacao));
-            }else{
-              Messages().msgErro("Sem acesso ao servidor!", context);
-              //pushAndRemoveUntil(context, TelaOpcaoAssinatura(autuacao: autuacao));
-            }
+      } else {
+        Messages.showLoadingDialog(context, _keyLoader);
+        int resp = await ConsultaApi.salvar_auto(autuacao, context);
+        Navigator.of(context, rootNavigator: true).pop(); //close the dialoge;
+        if (resp != 0) {
+          autuacao.id = resp;
+          pushAndRemoveUntil(context, TelaOpcaoAssinatura(autuacao: autuacao));
+        } else {
+          Messages().msgErro("Sem acesso ao servidor!", context);
+          //pushAndRemoveUntil(context, TelaOpcaoAssinatura(autuacao: autuacao));
+        }
       }
     }
   }
@@ -672,6 +680,7 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
       _cidadeEmpresaController.text = resultCep.localidade;
     });
   }
+
   Future _searchCepResponsavel() async {
     final cep = _cepResponsavelController.text;
 
@@ -684,12 +693,7 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
       _cidadeResponsavelController.text = resultCep.localidade;
     });
   }
-
-
-
 }
-
-
 
 Future<DateTime?> obterData(BuildContext context) async {
   return showDatePicker(
@@ -698,4 +702,3 @@ Future<DateTime?> obterData(BuildContext context) async {
       firstDate: DateTime(1900),
       lastDate: DateTime(2100));
 }
-

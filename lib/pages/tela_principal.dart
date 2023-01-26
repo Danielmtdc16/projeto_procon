@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -11,8 +12,7 @@ import 'package:projeto_procon/util/progress_carregamento.dart';
 import 'package:projeto_procon/util/shared_var.dart';
 import 'package:projeto_procon/widgets/menu_user.dart';
 import '../widgets/card_de_autuacao.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+
 
 class TelaPrincipal extends StatefulWidget {
   const TelaPrincipal({Key? key}) : super(key: key);
@@ -22,7 +22,8 @@ class TelaPrincipal extends StatefulWidget {
 }
 
 class _TelaPrincipalState extends State<TelaPrincipal> {
-  List<Autuacao> _list_autuacoes = <Autuacao>[];
+  // ignore: non_constant_identifier_names
+  final _list_autuacoes = <Autuacao>[];
   late bool isLoading = false;
   late Color offlineColor = kCinzaMuitoClaro;
   final GlobalKey<State> _keyLoader = GlobalKey<State>();
@@ -30,16 +31,16 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
   Future<List<Autuacao>> getServidor() async{
     isLoading = true;
     bool result = await InternetConnectionChecker().hasConnection;
-    var _autuacoes;
+    List<Autuacao> autuacoes;
     if(result==true) {
-      _autuacoes = ConsultaApi().getAutuacoes();
+      autuacoes = await ConsultaApi().getAutuacoes();
     }else{
       offlineColor = kAmareloClaro;
-      _autuacoes = ConsultaApi().getAutuacoesOffline();
+      autuacoes = await ConsultaApi().getAutuacoesOffline();
     }
     isLoading = false;
 
-    return _autuacoes;
+    return autuacoes;
   }
 
   @override
@@ -54,14 +55,14 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
   }
   @override
   Widget build(BuildContext context) {
-    return this.isLoading ? carregando_informacoes(context) : tela();
+    return isLoading ? carregando_informacoes(context) : tela();
   }
 
   Scaffold tela(){
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: const Text("PROCON"),
+        title: Text("PROCON", style: kTextosDosInputsTelaCadastro.copyWith(fontSize: 18),),
         centerTitle: true,
           actions: <Widget>[
             MenuUser()
@@ -70,16 +71,19 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView.builder(itemBuilder: (context, index) {
-          return CardDeAutuacao(autuacao: _list_autuacoes[index], colorCard: offlineColor);
+          return GestureDetector(child: CardDeAutuacao(autuacao: _list_autuacoes[index], colorCard: offlineColor));
         },
             itemCount: _list_autuacoes.length),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        selectedLabelStyle: kTextosDosInputsTelaCadastro,
+        unselectedLabelStyle: kTextosDosInputsTelaCadastro,
         currentIndex: 0,
+        fixedColor: kVermelha,
         items: [
           BottomNavigationBarItem(
               icon: IconButton(
-                icon: Icon(Icons.add_box_rounded),
+                icon: const Icon(Icons.add_box_rounded),
                 onPressed: () {
                   _novoAuto(context);
                 },
@@ -88,7 +92,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
           ),
           BottomNavigationBarItem(
               icon: IconButton(
-                icon: Icon(Icons.account_tree_rounded),
+                icon: const Icon(Icons.account_tree_rounded),
                 onPressed: () {
                   _sicronizar(context);
                 },
@@ -109,15 +113,18 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
     bool result = await InternetConnectionChecker().hasConnection;
 
     if(result) {
+      // ignore: use_build_context_synchronously
       Messages.showLoadingDialog(context, _keyLoader);
-      int salvo_all = 1;
+      int salvoAll = 1;
       for (var autuacao in _list_autuacoes) {
         if(autuacao.salvo_servidor == 0) {
+          // ignore: use_build_context_synchronously
           int resp = await ConsultaApi.salvar_auto(autuacao, context);
           if (resp == 0) {
-            salvo_all = 0;
-            Navigator.of(context, rootNavigator: true)
-                .pop(); //close the dialoge;
+            salvoAll = 0;
+            // ignore: use_build_context_synchronously
+            Navigator.of(context, rootNavigator: true).pop(); //close the dialoge;
+            // ignore: use_build_context_synchronously
             Messages().msgErro("Sem acesso ao servidor!", context);
           }else{
               autuacao.id = resp;
@@ -126,15 +133,27 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
           }
         }
       }
-      if (salvo_all == 1) {
+      if (salvoAll == 1) {
+        // ignore: use_build_context_synchronously
         Navigator.of(context, rootNavigator: true).pop(); //close the dialoge;
+
+        // ignore: use_build_context_synchronously
         Messages().msgInfor("Sicronizado com servidor", context);
         await SharedVar.clearAutoCelulars();
-        pushAndRemoveUntil(context, TelaPrincipal());
+        // ignore: use_build_context_synchronously
+        pushAndRemoveUntil(context, const TelaPrincipal());
       }
     }else{
+      // ignore: use_build_context_synchronously
       Messages().msgErro("Sem acesso a internet!", context);
     }
+  }
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(IterableProperty<Autuacao>('_list_autuacoes', _list_autuacoes));
+    properties.add(IterableProperty<Autuacao>('_list_autuacoes', _list_autuacoes));
+    properties.add(IterableProperty<Autuacao>('_list_autuacoes', _list_autuacoes));
   }
 
 }

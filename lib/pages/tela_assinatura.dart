@@ -1,11 +1,9 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:projeto_procon/pages/tela_cadastro_autuacao.dart';
 import 'package:projeto_procon/pages/tela_principal.dart';
 import 'package:projeto_procon/util/ConsultaApi.dart';
 import 'package:projeto_procon/util/messages.dart';
@@ -18,9 +16,10 @@ import 'package:projeto_procon/models/autuacao.dart';
 
 class TelaAssinatura extends StatefulWidget {
 
-  const TelaAssinatura({required this.autuacao});
+  const TelaAssinatura({super.key, required this.autuacao});
   final Autuacao autuacao;
   @override
+  // ignore: no_logic_in_create_state
   State<TelaAssinatura> createState() => _TelaAssinaturaState(autuacao: autuacao);
 }
 
@@ -35,9 +34,10 @@ class _TelaAssinaturaState extends State<TelaAssinatura> {
 
   final SignatureController _assinaturaController = SignatureController(
       penStrokeWidth: 5,
-      penColor: Color(0xFF282828),
+      penColor: const Color(0xFF282828),
       exportBackgroundColor: kCinzaMuitoClaro);
 
+  // ignore: non_constant_identifier_names
   late String path_assinatura = "";
 
 
@@ -91,15 +91,14 @@ class _TelaAssinaturaState extends State<TelaAssinatura> {
 
   String formattedDate() {
     DateTime dateTime = DateTime.now();
-    String dateTimeString = 'Signature_' +
-        dateTime.year.toString() +
-        dateTime.month.toString() +
-        dateTime.day.toString() +
-        dateTime.hour.toString() +
-        ':' + dateTime.minute.toString() +
-        ':' + dateTime.second.toString() +
-        ':' + dateTime.millisecond.toString() +
-        ':' + dateTime.microsecond.toString();
+    String dateTimeString = 'Signature_${dateTime.year.toString()}'
+        '${dateTime.month.toString()}'
+        '${dateTime.day.toString()}'
+        '${dateTime.hour.toString()}'
+        ':${dateTime.minute.toString()}'
+        ':${dateTime.second.toString()}'
+        ':${dateTime.millisecond.toString()}'
+        ':${dateTime.microsecond.toString()}';
     return dateTimeString;
   }
 
@@ -142,17 +141,23 @@ class _TelaAssinaturaState extends State<TelaAssinatura> {
       //Navigator.of(context,rootNavigator: true).pop();//close the dialoge;
 
       if (response.statusCode == 200) {
+        // ignore: use_build_context_synchronously
         Messages().msgInfor("Assinatura Salva com Sucesso!", context);
-        pushAndRemoveUntil(context, TelaPrincipal());
+        // ignore: use_build_context_synchronously
+        pushAndRemoveUntil(context, const TelaPrincipal());
       } else {
+        // ignore: use_build_context_synchronously
         Messages().msgErro("Sem acesso ao servidor!", context);
       }
     } else{
       await SharedVar.setAddAutuado(autuacao);
+      // ignore: use_build_context_synchronously
       Messages().msgInfor("Assinatura Salva com Sucesso!", context);
-      pushAndRemoveUntil(context, TelaPrincipal());
+      // ignore: use_build_context_synchronously
+      pushAndRemoveUntil(context, const TelaPrincipal());
     }
-    return showDialog<Null>(
+    // ignore: use_build_context_synchronously
+    return showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(

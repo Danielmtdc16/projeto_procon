@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/autuacao.dart';
 import '../constantes/constantes.dart';
-import 'package:intl/intl.dart';
 
 class CardDeAutuacao extends StatelessWidget {
   const CardDeAutuacao({Key? key, required this.autuacao, this.colorCard = kCinzaMuitoClaro}) : super(key: key);
@@ -23,30 +22,30 @@ class CardDeAutuacao extends StatelessWidget {
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Text("Código", style: TextStyle(fontFamily: 'Poppins'),),
+                const Text("Código", style: TextStyle(fontFamily: 'Poppins'),),
                 Container(
                   alignment: Alignment.center,
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   width: double.infinity,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                       color: Color(0xFF3A3A3A)
                   ),
-                  child: Text(autuacao.id.toString(), style: TextStyle(color: Colors.white, fontSize: 15, fontFamily: 'Poppins'),),
-                ),SizedBox(height: 5,),
+                  child: Text(autuacao.id.toString(), style: const TextStyle(color: Colors.white, fontSize: 15, fontFamily: 'Poppins'),),
+                ),
+                const SizedBox(height: 5,),
                 Container(
                   alignment: Alignment.center,
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   width: double.infinity,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                       color: kVermelha
                   ),
                   child: Text(
-                    autuacao.cnpj_cpf+"\n"+
-                        autuacao.razaosocial+"\n"+
-                        autuacao.cidade
-                    , style: TextStyle(color: Colors.white, fontSize: 15, fontFamily: 'Poppins'),),
+                    "${autuacao.cnpj_cpf}\n${autuacao.razaosocial}\n${autuacao.cidade}",
+                    style: const TextStyle(color: Colors.white, fontSize: 15, fontFamily: 'Poppins'),
+                  ),
                 )
               ]
           ),

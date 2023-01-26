@@ -5,12 +5,12 @@ class Messages {
     showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: new Text("Erro"),
+          title: const Text("Erro"),
           backgroundColor: Colors.green,
-          content: new Text(msg),
+          content: Text(msg),
           actions: <Widget>[
             TextButton(
-              child: Text('Ok'),
+              child: const Text('Ok'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -23,12 +23,12 @@ class Messages {
     showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: new Text("Informação"),
+          title: const Text("Informação"),
           backgroundColor: Colors.green,
-          content: new Text(msg),
+          content: Text(msg),
           actions: <Widget>[
             TextButton(
-              child: Text('Ok'),
+              child: const Text('Ok'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
