@@ -7,8 +7,14 @@ class MeuTextField extends StatelessWidget {
   final TextStyle style;
   final TextEditingController? controller;
   final int? maxLines;
+  final TextInputType tipoDoCampo;
+  final bool obscureText;
+  final Widget? icone;
 
-  const MeuTextField({Key? key, required this.hintTextInput, required this.style, this.controller, this.maxLines}) : super(key: key);
+  const MeuTextField({
+    Key? key, required this.hintTextInput, required this.style,
+    this.controller, this.maxLines, this.tipoDoCampo = TextInputType.text,
+    this.obscureText = false, this.icone}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,16 +31,20 @@ class MeuTextField extends StatelessWidget {
           fillColor: kCinzaMuitoClaro,
           filled: true,
           floatingLabelBehavior: FloatingLabelBehavior.never,
+          suffixIcon: icone
       ),
       style: style,
       controller: controller,
       maxLines: maxLines,
+      keyboardType: tipoDoCampo,
+      obscureText: obscureText,
       validator: (value){
         if (value == null || value.isEmpty){
           return 'Campo Obrigatório!';
         }
         return null;
       },
+      textInputAction: TextInputAction.next,
     );
   }
 }

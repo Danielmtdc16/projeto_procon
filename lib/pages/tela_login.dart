@@ -17,6 +17,8 @@ class _TelaLoginState extends State<TelaLogin> {
   final textUsername = TextEditingController();
   final textPassword = TextEditingController();
   final GlobalKey<State> _keyLoader = GlobalKey<State>();
+  bool _showPassword = false;
+  bool ativo = true;
 
   @override
   Widget build(BuildContext context) {
@@ -47,12 +49,24 @@ class _TelaLoginState extends State<TelaLogin> {
                 hintTextInput: "Email",
                 style: kTextosDosInputsTelaCadastro,
                 controller: textUsername,
+                tipoDoCampo: TextInputType.emailAddress,
               ),
               const SizedBox(height: 10,),
               MeuTextField(
                 hintTextInput: "Senha",
                 style: kTextosDosInputsTelaCadastro,
                 controller: textPassword,
+                tipoDoCampo: TextInputType.visiblePassword,
+                maxLines: 1,
+                icone: ativo ? GestureDetector(
+                  child: Icon(_showPassword == false ? Icons.visibility_off : Icons.visibility),
+                  onTap: (){
+                    setState(() {
+                      _showPassword = !_showPassword;
+                    });
+                  },
+                ) : null,
+                obscureText: _showPassword == false ? true : false,
               ),
               const SizedBox(height: kalturaEspacamento,),
               SizedBox(

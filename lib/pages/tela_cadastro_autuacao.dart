@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:intl/intl.dart';
 
 import 'package:projeto_procon/constantes/constantes.dart';
 import 'package:projeto_procon/models/autuacao.dart';
@@ -242,6 +241,7 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
                           hintTextInput: "CEP",
                           style: kTextosDosInputsTelaCadastro,
                           controller: _cepEmpresaController,
+                          tipoDoCampo: TextInputType.number,
                         ),
                       ),
                       const SizedBox(
@@ -281,6 +281,7 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
                           hintTextInput: "Número",
                           style: kTextosDosInputsTelaCadastro,
                           controller: _numeroEmpresaController,
+                          tipoDoCampo: TextInputType.number,
                         ),
                       ),
                       const SizedBox(
@@ -392,6 +393,7 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
                           hintTextInput: "CEP",
                           style: kTextosDosInputsTelaCadastro,
                           controller: _cepResponsavelController,
+                          tipoDoCampo: TextInputType.number,
                         ),
                       ),
                       const SizedBox(
@@ -430,6 +432,7 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
                           hintTextInput: "Número",
                           style: kTextosDosInputsTelaCadastro,
                           controller: _numeroResponsavelController,
+                          tipoDoCampo: TextInputType.number,
                         ),
                       ),
                       const SizedBox(
@@ -507,6 +510,7 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
                     hintTextInput: "Telefone",
                     style: kTextosDosInputsTelaCadastro,
                     controller: _telefoneResponsavelController,
+                    tipoDoCampo: TextInputType.phone,
                   ),
                   const SizedBox(
                     height: 20,
@@ -550,15 +554,6 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
                       ),
                       Expanded(
                         child: ContainerPersonalizado(
-                          aoPressionar: () async {
-                            final newDate = await obterData(context);
-                            if (newDate == null) return;
-
-                            setState(() {
-                              dataLocalAutuacao =
-                                  DateFormat('dd/MM/yyyy').format(newDate);
-                            });
-                          },
                           cor: kAzulClaro,
                           filhoContainer: Text(
                             dataLocalAutuacao,
@@ -739,10 +734,3 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
   }
 }
 
-Future<DateTime?> obterData(BuildContext context) async {
-  return showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime(2100));
-}
