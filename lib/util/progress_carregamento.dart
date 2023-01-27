@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_procon/constantes/constantes.dart';
 
+// ignore: non_constant_identifier_names
 Scaffold carregando_informacoes(context){
   return Scaffold(
     body: Padding(
@@ -9,7 +11,7 @@ Scaffold carregando_informacoes(context){
         children: <Widget>[
           Text(
             'Carregando ...',
-            style: Theme.of(context).textTheme.headline6,
+            style: kTextosDosInputsTelaCadastro.copyWith(fontSize: 18),
           ),
           const LinearProgressIndicator(
             backgroundColor: Colors.grey,

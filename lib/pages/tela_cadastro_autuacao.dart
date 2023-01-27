@@ -22,9 +22,10 @@ import '../util/consultaCEP.dart';
 class TelaCadastroAuto extends StatefulWidget {
   // ignore: non_constant_identifier_names
   String path_assinatura;
+  Autuacao? autuacao;
 
   // ignore: non_constant_identifier_names
-  TelaCadastroAuto({Key? key, this.path_assinatura = ''}) : super(key: key);
+  TelaCadastroAuto({Key? key, this.path_assinatura = '', this.autuacao}) : super(key: key);
 
   @override
   State<TelaCadastroAuto> createState() => _TelaCadastroAutoState();
@@ -70,15 +71,57 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
   final _localAutuacaoController = TextEditingController();
   final _irregularidadeController = TextEditingController();
 
+
+  preencherCampos(){
+
+    Autuacao? autuacao = widget.autuacao;
+
+    if (autuacao != null){
+
+      // Preenchendo Dados da Empresa
+      _razaoSocialController.text = autuacao.razaosocial;
+      _nomeFantasiaController.text = autuacao.nome_fantasia;
+      _atividadeController.text = autuacao.atividade;
+      _cnpjCpfController.text = autuacao.cnpj_cpf;
+      dropValueTipoInscricao = ValueNotifier(autuacao.tipo_inscricao);
+      _cepEmpresaController.text = autuacao.cep;
+      _logradouroEmpresaController.text = autuacao.logradouro;
+      _numeroEmpresaController.text = autuacao.numero;
+      _bairroEmpresaController.text = autuacao.bairro;
+      _cidadeEmpresaController.text = autuacao.cidade;
+      dropValueEmpresa = ValueNotifier(autuacao.estado);
+
+      // Preenchendo Dados do Responsável
+      _nomeResponsavelController.text = autuacao.responsavel;
+      _cpfRgResponsavelController.text = autuacao.cpf_rg;
+      _cepResponsavelController.text = autuacao.cep_responsavel;
+      _logradouroResponsavelController.text = autuacao.logradouro_responsavel;
+      _numeroResponsavelController.text = autuacao.numero_responsavel;
+      _bairroResponsavelController.text = autuacao.bairro_responsavel;
+      _cidadeResponsavelController.text = autuacao.cidade_responsavel;
+      dropValueResponsavel = ValueNotifier(autuacao.estado_responsavel);
+      _telefoneResponsavelController.text = autuacao.telefone_responsavel;
+
+      // Preenchendo Dados Local de Autuação
+      _localAutuacaoController.text = autuacao.local_autuacao;
+      timeLocalAutuacao = '${autuacao.data_autuacao.hour}:${autuacao.data_autuacao.minute}';
+      dataLocalAutuacao = '${autuacao.data_autuacao.day}/${autuacao.data_autuacao.month}/${autuacao.data_autuacao.year}';
+
+      //Preechendo Dados Cominação legal
+      _irregularidadeController.text = autuacao.comunicacao_legal;
+
+    }
+  }
+
   Uint8List? imagem;
 
   final GlobalKey<State> _keyLoader = GlobalKey<State>();
 
   final _formKey = GlobalKey<FormState>();
 
-  final dropValueEmpresa = ValueNotifier('');
-  final dropValueResponsavel = ValueNotifier('');
-  final dropValueTipoInscricao = ValueNotifier('');
+  var dropValueEmpresa = ValueNotifier('');
+  var dropValueResponsavel = ValueNotifier('');
+  var dropValueTipoInscricao = ValueNotifier('');
 
   late String estadoEmpresa;
   late String estadoResponsavel;
@@ -86,6 +129,7 @@ class _TelaCadastroAutoState extends State<TelaCadastroAuto> {
 
   @override
   Widget build(BuildContext context) {
+    preencherCampos();
     return Scaffold(
       appBar: AppBar(
           title: Text(

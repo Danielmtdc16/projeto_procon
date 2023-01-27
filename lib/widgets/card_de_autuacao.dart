@@ -1,4 +1,6 @@
+
 import 'package:flutter/material.dart';
+import 'package:projeto_procon/pages/tela_cadastro_autuacao.dart';
 import '../models/autuacao.dart';
 import '../constantes/constantes.dart';
 
@@ -8,13 +10,18 @@ class CardDeAutuacao extends StatelessWidget {
   final Autuacao autuacao;
   final Color colorCard;
 
+  mostrarDetalhesAuto(BuildContext context, Autuacao autuacao) {
+    Navigator.push(context, MaterialPageRoute(builder: (_) => TelaCadastroAuto(autuacao: autuacao,)));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
       color: (autuacao.salvo_servidor == 1 ? kCinzaMuitoClaro : kAmareloClaro),
       child: InkWell(
         onTap: () {
-          //_showAutuacao(context, _aulas[index]);
+          mostrarDetalhesAuto(context, autuacao);
+          print(autuacao.tipo_inscricao);
         },
         child: Padding(
           padding: const EdgeInsets.only(

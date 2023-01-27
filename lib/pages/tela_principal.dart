@@ -71,7 +71,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView.builder(itemBuilder: (context, index) {
-          return GestureDetector(child: CardDeAutuacao(autuacao: _list_autuacoes[index], colorCard: offlineColor));
+          return CardDeAutuacao(autuacao: _list_autuacoes[index], colorCard: offlineColor);
         },
             itemCount: _list_autuacoes.length),
       ),
